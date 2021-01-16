@@ -11,9 +11,9 @@ Sidero Workout Planner
     - npm install --global gulp-cli (inside root of directory)
 ### Setup Instructions
 
-git clone https://github.com/cs130-w21/3.git
+git clone https://github.com/cs130-w21/3.git sidero
 
-cd 3
+cd sidero
 
 mvn clean install
 (Do not worry about Browserslist error)
