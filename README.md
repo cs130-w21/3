@@ -2,7 +2,7 @@
 Sidero Workout Planner
 
 ### Dependencies
-# You will probably run into errors if you do not have these installed
+### You will probably run into errors if you do not have these installed
 - Java
 - Node
 - NPM
@@ -19,7 +19,7 @@ mvn clean install
 (Do not worry about Browserslist error)
 
 
-##App can be run in two ways
+## App can be run in two ways
 
 For complete build testing
 
