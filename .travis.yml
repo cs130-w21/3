@@ -1,8 +1,5 @@
 language: java
 
-env: 
-  CI: false
-
 before_script:
   - npm install --global gulp-cli
 
