@@ -1,6 +1,6 @@
 language: java
 before_install:
-  - npm install -g gulp-cli
+  - npm install -g gulp
 
 install: skip
 script: mvn clean install
