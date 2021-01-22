@@ -2,3 +2,6 @@ language: java
 jdk: openjdk8
 before_install:
   - npm install -g gulp-cli
+
+install: skip
+script: mvn clean install
