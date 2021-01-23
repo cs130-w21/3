@@ -13,7 +13,7 @@ public class AppController {
 	
 	@RequestMapping({"/", "/{x:[\\w\\-]+}", "/{x:^(?!api$).*$}/**/{y:[\\w\\-]+}"})
 	public String loadUI() {
-		log.info("loading UI");
+		//log.info("loading UI");
 		return "forward:/index.html";
 	}
 
