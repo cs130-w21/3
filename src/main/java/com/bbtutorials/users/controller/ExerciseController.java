@@ -24,14 +24,14 @@ public class ExerciseController {
     @GetMapping(path = "/runs")
     @ResponseBody
     public List<ExerciseRun> getRunExercises(@RequestParam String userEmail) {
-        //log.info("ExerciseController: get run exercises");
+        log.info("ExerciseController: get run exercises");
         return runExerciseDao.getRunExercises(userEmail);
     }
 
     @GetMapping(path = "/weights")
     @ResponseBody
     public List<ExerciseWeight> getWeightExercises(@RequestParam String userEmail) {
-        //log.info("ExerciseController: get run exercises");
+        log.info("ExerciseController: get run exercises");
         return weightExerciseDao.getWeightExercises(userEmail);
     }
 }
