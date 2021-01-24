@@ -48,4 +48,5 @@ public class ExerciseController {
         log.info("ExerciseController: create weight exercise");
         weightExerciseDao.putWeightExercise(exercise);
     }
+
 }

@@ -36,5 +36,5 @@ public class RunExerciseDao {
     public void putRunExercise(ExerciseRun exercise) {
         mapper.save(exercise);
     }
-
+  
 }
