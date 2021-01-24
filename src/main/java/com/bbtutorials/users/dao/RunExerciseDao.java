@@ -33,4 +33,8 @@ public class RunExerciseDao {
         return mapper.scan(ExerciseRun.class, scanExpression);
     }
 
+    public void putRunExercise(ExerciseRun exercise) {
+        mapper.save(exercise);
+    }
+  
 }

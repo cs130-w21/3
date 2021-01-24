@@ -3,6 +3,7 @@ package com.bbtutorials.users.dao;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.bbtutorials.users.model.ExerciseRun;
 import com.bbtutorials.users.model.ExerciseWeight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,6 +32,10 @@ public class WeightExerciseDao {
                 .withFilterExpression("UserEmail = :val1 and WorkoutType = :val2").withExpressionAttributeValues(eav);
 
         return mapper.scan(ExerciseWeight.class, scanExpression);
+    }
+
+    public void putWeightExercise(ExerciseWeight exercise) {
+        mapper.save(exercise);
     }
 
 }

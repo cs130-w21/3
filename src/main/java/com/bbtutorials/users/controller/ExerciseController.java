@@ -34,4 +34,19 @@ public class ExerciseController {
         log.info("ExerciseController: get run exercises");
         return weightExerciseDao.getWeightExercises(userEmail);
     }
+
+    @PostMapping(path = "/run/create")
+    @ResponseBody
+    public void createRunExercise(@RequestBody ExerciseRun exercise) {
+        log.info("ExerciseController: create run exercise");
+        runExerciseDao.putRunExercise(exercise);
+    }
+
+    @PostMapping(path = "/weight/create")
+    @ResponseBody
+    public void createWeightExercise(@RequestBody ExerciseWeight exercise) {
+        log.info("ExerciseController: create weight exercise");
+        weightExerciseDao.putWeightExercise(exercise);
+    }
+
 }
