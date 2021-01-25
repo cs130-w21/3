@@ -1,11 +1,10 @@
 import React from "react";
-import { getWeightExercises, getRunExercises, createExercise} from '../services/ExerciseServices'
+import { getWeightExercises, getRunExercises, /*createExercise*/} from '../services/ExerciseServices'
 
 
 export default function Workouts() {
     const [weightExercises, setWeightExercises] = React.useState([]);
     const [runExercises, setRunExercises] = React.useState([]);
-    const [email, setEmail] = React.useState("test@gmail.com");
     const [populate, setPopulate] = React.useState(true);
 
     const populateExercises = () => {
@@ -14,20 +13,20 @@ export default function Workouts() {
           //These are just examples of how to create event, remove them from this function
           //createExercise({userEmail: "test@gmail.com", workoutType: "Run", name: "Test", miles: 3.12})
           //createExercise({userEmail: "test@gmail.com", workoutType: "Weights", name: "Test", sets: 4, reps: 12, lbs: 40})
-          getWeights();
-          getRuns();
+          getWeights("test@gmail.com");
+          getRuns("test@gmail.com");
           setPopulate(false);
         }
       }
 
-    const getWeights = () => {
+    const getWeights = (email) => {
         getWeightExercises(email)
             .then(response => {
                 setWeightExercises(response);
           });
       }
 
-      const getRuns = () => {
+      const getRuns = (email) => {
         getRunExercises(email)
             .then(response => {
                 setRunExercises(response);
