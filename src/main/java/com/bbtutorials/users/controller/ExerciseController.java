@@ -49,4 +49,32 @@ public class ExerciseController {
         weightExerciseDao.putWeightExercise(exercise);
     }
 
+    @PostMapping(path = "/run/update")
+    @ResponseBody
+    public void updateRunExercise(@RequestBody ExerciseRun exercise) {
+        log.info("ExerciseController: update run exercise");
+        runExerciseDao.updateRunExercise(exercise);
+    }
+
+    @PostMapping(path = "/weight/update")
+    @ResponseBody
+    public void updateWeightExercise(@RequestBody ExerciseWeight exercise) {
+        log.info("ExerciseController: update weight exercise");
+        weightExerciseDao.updateWeightExercise(exercise);
+    }
+
+    @PostMapping(path = "/run/delete")
+    @ResponseBody
+    public void deleteRunExercise(@RequestBody ExerciseRun exercise) {
+        log.info("ExerciseController: delete run exercise");
+        runExerciseDao.removeRunExercise(exercise);
+    }
+
+    @PostMapping(path = "/weight/delete")
+    @ResponseBody
+    public void deleteWeightExercise(@RequestBody ExerciseWeight exercise) {
+        log.info("ExerciseController: delete weight exercise");
+        weightExerciseDao.removeWeightExercise(exercise);
+    }
+
 }
