@@ -1,6 +1,7 @@
 package com.bbtutorials.users.dao;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.bbtutorials.users.model.ExerciseRun;
@@ -36,5 +37,14 @@ public class RunExerciseDao {
     public void putRunExercise(ExerciseRun exercise) {
         mapper.save(exercise);
     }
-  
+
+    public void updateRunExercise(ExerciseRun exercise) {
+        DynamoDBMapperConfig dynamoDBMapperConfig = new DynamoDBMapperConfig.Builder()
+                .withConsistentReads(DynamoDBMapperConfig.ConsistentReads.CONSISTENT)
+                .withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.UPDATE)
+                .build();
+        mapper.save(exercise, dynamoDBMapperConfig);
+    }
+
+    public void removeRunExercise(ExerciseRun exercise) { mapper.delete(exercise); }
 }
