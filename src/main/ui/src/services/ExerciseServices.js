@@ -43,15 +43,16 @@ export async function createExercise(exercise) { //Call this function with a jso
     return await response.json();
 }
 
-/*
+
 export async function deleteExercise(exercise) {
-    if(exercise.workoutType == "Run")
+    var endpoint;
+    if(exercise.workoutType === "Run")
     {
-        var endpoint = "/api/run/delete"
+        endpoint = "/api/run/delete"
     }
     else
     {
-        var endpoint = "/api/weight/delete"
+        endpoint = "/api/weight/delete"
     }
 
     const response = await fetch(endpoint, {
@@ -62,15 +63,16 @@ export async function deleteExercise(exercise) {
     return await response.json();
 }
 
-//Modify may just be calling the create with the ID generated *Stay tuned*
-export async function modifyExercise(exercise) {
-    if(exercise.workoutType == "Run")
+
+export async function updateExercise(exercise) {
+    var endpoint;
+    if(exercise.workoutType === "Run")
     {
-        var endpoint = "/api/run/delete"
+        endpoint = "/api/run/update"
     }
     else
     {
-        var endpoint = "/api/weight/delete"
+        endpoint = "/api/weight/update"
     }
 
     const response = await fetch(endpoint, {
@@ -80,4 +82,3 @@ export async function modifyExercise(exercise) {
       })
     return await response.json();
 }
-*/
