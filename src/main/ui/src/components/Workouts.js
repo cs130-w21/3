@@ -71,6 +71,8 @@ export default function Workouts() {
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState(0);
     const [miles, setMiles] = React.useState(0);
+    const [weightname, setWeightName] = React.useState("");
+    const [runname, setRunName] = React.useState("");
     const [weight, setWeight] = React.useState(0);
     const [reps, setReps] = React.useState(0);
     const [sets, setSets] = React.useState(0);
@@ -185,6 +187,17 @@ export default function Workouts() {
                   <form className={classes.root} onSubmit={handleAddWeights}>
                     <TextField
                       autoFocus
+                      value={weightname}
+                      onInput={ e=>setWeightName(e.target.value)}
+                      margin="dense"
+                      name="weightname"
+                      id="weightname"
+                      label="Exercise Name"
+                      type="text"
+                      required={true}
+                      fullWidth
+                    />
+                    <TextField
                       value={weight}
                       onInput={ e=>setWeight(e.target.value)}
                       margin="dense"
@@ -227,6 +240,18 @@ export default function Workouts() {
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                   <form className={classes.root} onSubmit={handleAddRun}>
+                    <TextField
+                      autoFocus
+                      value={runname}
+                      onInput={ e=>setRunName(e.target.value)}
+                      margin="dense"
+                      name="runname"
+                      id="runname"
+                      label="Exercise Name"
+                      type="text"
+                      required={true}
+                      fullWidth
+                    />
                     <TextField
                       autoFocus
                       value={miles}
