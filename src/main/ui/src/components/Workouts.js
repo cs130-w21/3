@@ -42,48 +42,34 @@ export default function Workouts() {
                 setRunExercises(response);
         });
     }
-    
-    function createTestData(workout, exercises, d_o_w) {
+
+    // Test data due to issues with my local build
+    // If your .jar build doesn't connect to DDB, feel free to use following
+    // test data - simply replace weightExercises in table with weightExerciseTestData
+    // and same with runExercise
+    /*
+    const weightExerciseTestData = [{"id":"d7dba988-e445-4f62-9bb6-2890a6b304bb","userEmail":"test@gmail.com","name":"Test Arms","lbs":20,"sets":6,"reps":10,"workoutType":"Weights"}];
+    const runExerciseTestData = [{"id":"abc","userEmail":"test@gmail.com","name":"Test","miles":2.5,"workoutType":"Run"}];
+
+    function createWorkoutTestData(workout, exercises, d_o_w) {
         return { workout, exercises, d_o_w };
     }
-
-    const testData = [
-        createTestData('Chest', ['Bench Press', 'Incline Dumbbell Press'], 'M, F'),
-        createTestData('Tris', ['Dips', 'Cable Pull'], 'M, F'),
-        createTestData('Legs', ['Squats', 'Lunges', 'RDLs'], 'Tu, Sa'),
-        createTestData('Back', ['Pull-Ups', 'Cable Rows', 'Bent-Over Rows'], 'Th, Su'),
-        createTestData('Bis', ['Dumbbell Curls', 'Curly-Bar Curls'], 'Th, Su'),
-        createTestData('Shoulders', ['Military Press', 'Ys and Ts'], 'W'),
-        createTestData('Abs', ['Circuit'], 'M, T, W, Th, F'),
+    const workoutTestData = [
+        createWorkoutTestData('Chest', ['Bench Press', 'Incline Dumbbell Press'], 'M, F'),
+        createWorkoutTestData('Tris', ['Dips', 'Cable Pull'], 'M, F'),
+        createWorkoutTestData('Legs', ['Squats', 'Lunges', 'RDLs'], 'Tu, Sa'),
+        createWorkoutTestData('Back', ['Pull-Ups', 'Cable Rows', 'Bent-Over Rows'], 'Th, Su'),
+        createWorkoutTestData('Bis', ['Dumbbell Curls', 'Curly-Bar Curls'], 'Th, Su'),
+        createWorkoutTestData('Shoulders', ['Military Press', 'Ys and Ts'], 'W'),
+        createWorkoutTestData('Abs', ['Circuit'], 'M, T, W, Th, F'),
     ];
+    */
 
     return (
         <div>
-            <h1>Workouts go here</h1>
+            <h1>Workouts</h1>
             {populateExercises()}
-            <TableContainer component={Paper}>
-                <Table aria-label="workouts table">
-                    <TableHead>
-                    <TableRow>
-                        <TableCell>Workout</TableCell>
-                        <TableCell align="right">Exercises</TableCell>
-                        <TableCell align="right">Days of the Week</TableCell>
-                    </TableRow>
-                    </TableHead>
-                    <TableBody>
-                    {testData.map((testData) => (
-                        <TableRow key={testData.workout}>
-                        <TableCell component="th" scope="row">
-                            {testData.workout}
-                        </TableCell>
-                        <TableCell align="right">{testData.exercises}</TableCell>
-                        <TableCell align="right">{testData.d_o_w}</TableCell>
-                        </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <h2>Here are the Weights</h2>
+            <h2>Lifting Weights</h2>
             <TableContainer component={Paper}>
                 <Table aria-label="weight exercises table">
                     <TableHead>
@@ -98,18 +84,37 @@ export default function Workouts() {
                     {weightExercises.map((exercise) => (
                         <TableRow key={exercise.id}>
                         <TableCell component="th" scope="row">
-                            {testData.name}
+                            {exercise.name}
                         </TableCell>
-                        <TableCell align="right">{testData.lbs}</TableCell>
-                        <TableCell align="right">{testData.sets}</TableCell>
-                        <TableCell align="right">{testData.reps}</TableCell>
+                        <TableCell align="right">{exercise.lbs}</TableCell>
+                        <TableCell align="right">{exercise.sets}</TableCell>
+                        <TableCell align="right">{exercise.reps}</TableCell>
                         </TableRow>
                     ))}
                     </TableBody>
                 </Table>
             </TableContainer>
-            <h2>Here are the Runs</h2>
-            {JSON.stringify(runExercises)}
+            <h2>Going for a Run</h2>
+            <TableContainer component={Paper}>
+                <Table aria-label="run exercises table">
+                    <TableHead>
+                    <TableRow>
+                        <TableCell>Exercise</TableCell>
+                        <TableCell align="right">Miles</TableCell>
+                    </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {runExercises.map((exercise) => (
+                        <TableRow key={exercise.id}>
+                        <TableCell component="th" scope="row">
+                            {exercise.name}
+                        </TableCell>
+                        <TableCell align="right">{exercise.miles}</TableCell>
+                        </TableRow>
+                    ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </div>
     );
 }
