@@ -141,7 +141,7 @@ export default function Workouts() {
         "name":weightname,
         "sets":sets,
         "reps":reps,
-        "weight":weight,
+        "lbs":weight,
         "exerciseType":"Weight",
       }
       createExercise(jsonobj)
@@ -223,7 +223,7 @@ export default function Workouts() {
                       margin="dense"
                       name="weight"
                       id="weight"
-                      label="Weight"
+                      label="Weight (lbs)"
                       type="number"
                       required={true}
                       fullWidth
@@ -299,7 +299,7 @@ export default function Workouts() {
                     <TableHead>
                     <TableRow>
                         <TableCell>Exercise</TableCell>
-                        <TableCell align="right">Weight</TableCell>
+                        <TableCell align="right">Weight (Lbs)</TableCell>
                         <TableCell align="right">Sets</TableCell>
                         <TableCell align="right">Reps</TableCell>
                     </TableRow>

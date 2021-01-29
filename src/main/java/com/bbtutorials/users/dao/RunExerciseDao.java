@@ -29,7 +29,7 @@ public class RunExerciseDao {
         eav.put(":val2", new AttributeValue().withS("Run"));
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
-                .withFilterExpression("UserEmail = :val1 and WorkoutType = :val2").withExpressionAttributeValues(eav);
+                .withFilterExpression("UserEmail = :val1 and ExerciseType = :val2").withExpressionAttributeValues(eav);
 
         return mapper.scan(ExerciseRun.class, scanExpression);
     }
