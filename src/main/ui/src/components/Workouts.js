@@ -157,7 +157,7 @@ export default function Workouts() {
             <h1>Workouts</h1>
             {populateExercises()}
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-              Add Workout
+              Add Exercise
             </Button>
             <h2>Lifting Weights</h2>
             <div className={classes.root}>
