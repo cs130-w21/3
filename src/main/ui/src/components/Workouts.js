@@ -1,5 +1,5 @@
 import React from "react";
-import { getWeightExercises, getRunExercises, /* deleteExercise, updateExercise, createExercise*/} from '../services/ExerciseServices';
+import { getWeightExercises, getRunExercises, createExercise /* deleteExercise, updateExercise*/} from '../services/ExerciseServices';
 import { makeStyles } from "@material-ui/core/styles";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -120,14 +120,34 @@ export default function Workouts() {
       setOpen(false);
     };
 
-    const handleAddRun = (event) => {
+    const handleAddRun = () => {
       setOpen(false);
-      // use miles param to add new run
+      var jsonobj = {
+        "userEmail":"test@gmail.com",
+        "name":runname,
+        "miles":miles,
+        "exerciseType":"Run",
+      }
+      createExercise(jsonobj)
+          .then(response => {
+              console.log("success")
+      });
     };
 
     const handleAddWeights = () => {
       setOpen(false);
-      // use weight, sets, and reps params to add new weight exercise
+      var jsonobj = {
+        "userEmail":"test@gmail.com",
+        "name":weightname,
+        "sets":sets,
+        "reps":reps,
+        "weight":weight,
+        "exerciseType":"Weight",
+      }
+      createExercise(jsonobj)
+          .then(response => {
+              console.log("success")
+      });
     };
 
     // Test data due to issues with my local build
@@ -154,11 +174,11 @@ export default function Workouts() {
 
     return (
         <div>
+          <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+            Add Exercise
+          </Button>
             <h1>Workouts</h1>
             {populateExercises()}
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-              Add Exercise
-            </Button>
             <h2>Lifting Weights</h2>
             <div className={classes.root}>
               <Dialog
@@ -230,7 +250,7 @@ export default function Workouts() {
                       required={true}
                       fullWidth
                     />
-                    <Button onClick={handleAddWeights} color="primary">
+                    <Button type="submit" color="primary">
                       Add
                     </Button>
                     <Button onClick={handleClose} color="secondary">
