@@ -46,7 +46,7 @@ export async function createExercise(exercise) { //Call this function with a jso
 
 export async function deleteExercise(exercise) {
     var endpoint;
-    if(exercise.workoutType === "Run")
+    if(exercise.exerciseType === "Run")
     {
         endpoint = "/api/run/delete"
     }
@@ -66,7 +66,7 @@ export async function deleteExercise(exercise) {
 
 export async function updateExercise(exercise) {
     var endpoint;
-    if(exercise.workoutType === "Run")
+    if(exercise.exerciseType === "Run")
     {
         endpoint = "/api/run/update"
     }

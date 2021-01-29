@@ -26,10 +26,10 @@ public class WeightExerciseDao {
     public List<ExerciseWeight> getWeightExercises(String userEmail) {
         Map<String, AttributeValue> eav = new HashMap<>();
         eav.put(":val1", new AttributeValue().withS(userEmail));
-        eav.put(":val2", new AttributeValue().withS("Weights"));
+        eav.put(":val2", new AttributeValue().withS("Weight"));
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
-                .withFilterExpression("UserEmail = :val1 and WorkoutType = :val2").withExpressionAttributeValues(eav);
+                .withFilterExpression("UserEmail = :val1 and ExerciseType = :val2").withExpressionAttributeValues(eav);
 
         return mapper.scan(ExerciseWeight.class, scanExpression);
     }
