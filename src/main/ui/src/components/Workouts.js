@@ -1,5 +1,6 @@
 import React from "react";
 import { getWeightExercises, getRunExercises, createExercise /* deleteExercise, updateExercise*/} from '../services/ExerciseServices';
+import { getWorkouts as getAPIWorkouts, /*createWorkout, deleteWorkout, updateWorkout*/} from '../services/WorkoutServices';
 import { makeStyles } from "@material-ui/core/styles";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -66,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Workouts() {
     const [weightExercises, setWeightExercises] = React.useState([]);
+    const [workouts, setWorkouts] = React.useState([]);
     const [runExercises, setRunExercises] = React.useState([]);
     const [populate, setPopulate] = React.useState(true);
     const [open, setOpen] = React.useState(false);
@@ -82,12 +84,16 @@ export default function Workouts() {
         if(populate === true)
         {
           //These are just examples of how to create event, remove them from this function
+          //createWorkout({userEmail: "test@gmail.com", exercises: ["exerciseID1", "exerciseID2"], name: "Test Workout", daysOfWeek: [-1]}).then( () => {getWorkouts("test@gmail.com")})
+          //deleteWorkout({id: "b9545696-9587-4907-86c9-80402914d23b", userEmail: "test@gmail.com", name: "Test Workout", exercises: ["exerciseID1", "exerciseID2"], daysOfWeek: [-1]}).then( () => {getWorkouts("test@gmail.com")})
+          //updateWorkout({id: "49627d29-06fd-4b80-b9cd-d0a46d799c01", userEmail: "test@gmail.com", name: "Test Workout", exercises: ["exerciseID1","exerciseID2", "exerciseID3"], daysOfWeek: [-1]}).then( () => {getWorkouts("test@gmail.com")})
           //createExercise({userEmail: "test@gmail.com", workoutType: "Run", name: "Test", miles: 3.12}).then( () => {getRuns("test@gmail.com")})
           //createExercise({userEmail: "test@gmail.com", workoutType: "Weights", name: "Test", sets: 4, reps: 12, lbs: 40}).then( () => {getWeights("test@gmail.com")})
           //updateExercise({id: "9751f315-4e8e-414e-945d-023cd21925ba", userEmail: "test@gmail.com", name: "Test Night Run", miles: 10.0, workoutType: "Run"}).then( () => {getRuns("test@gmail.com")})
           //updateExercise({id: "ec5d2895-f639-432b-a9c4-866b43c443f5", userEmail: "test@gmail.com", name: "Test", lbs: 100, sets: 4, reps: 12, workoutType: "Weights"}).then( () => {getWeights("test@gmail.com")})
           //deleteExercise({id: "9751f315-4e8e-414e-945d-023cd21925ba", userEmail: "test@gmail.com", name: "Test Night Run", miles: 1.33, workoutType: "Run"}).then( () => {getRuns("test@gmail.com")})
           //deleteExercise({id: "ec5d2895-f639-432b-a9c4-866b43c443f5", userEmail: "test@gmail.com", name: "Test", lbs: 40, sets: 4, reps: 12, workoutType: "Weights"}).then( () => {getWeights("test@gmail.com")})
+          getWorkouts("test@gmail.com")
           getWeights("test@gmail.com");
           getRuns("test@gmail.com");
           setPopulate(false);
@@ -107,6 +113,13 @@ export default function Workouts() {
                 setRunExercises(response);
         });
     }
+
+    const getWorkouts = (email) => {
+      getAPIWorkouts(email)
+          .then(response => {
+              setWorkouts(response);
+      });
+  }
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -174,6 +187,8 @@ export default function Workouts() {
 
     return (
         <div>
+          <div> test workouts </div>
+          <div> {JSON.stringify(workouts)} </div>
           <Button variant="outlined" color="primary" onClick={handleClickOpen}>
             Add Exercise
           </Button>
