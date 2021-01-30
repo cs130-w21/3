@@ -86,7 +86,7 @@ export default function Workouts() {
           //These are just examples of how to create event, remove them from this function
           //createWorkout({userEmail: "test@gmail.com", exercises: ["exerciseID1", "exerciseID2"], name: "Test Workout", daysOfWeek: [-1]}).then( () => {getWorkouts("test@gmail.com")})
           //deleteWorkout({id: "b9545696-9587-4907-86c9-80402914d23b", userEmail: "test@gmail.com", name: "Test Workout", exercises: ["exerciseID1", "exerciseID2"], daysOfWeek: [-1]}).then( () => {getWorkouts("test@gmail.com")})
-          updateWorkout({id: "49627d29-06fd-4b80-b9cd-d0a46d799c01", userEmail: "test@gmail.com", name: "Test Workout", exercises: ["exerciseID1","exerciseID2", "exerciseID3"], daysOfWeek: [-1]}).then( () => {getWorkouts("test@gmail.com")})
+          //updateWorkout({id: "49627d29-06fd-4b80-b9cd-d0a46d799c01", userEmail: "test@gmail.com", name: "Test Workout", exercises: ["exerciseID1","exerciseID2", "exerciseID3"], daysOfWeek: [-1]}).then( () => {getWorkouts("test@gmail.com")})
           //createExercise({userEmail: "test@gmail.com", workoutType: "Run", name: "Test", miles: 3.12}).then( () => {getRuns("test@gmail.com")})
           //createExercise({userEmail: "test@gmail.com", workoutType: "Weights", name: "Test", sets: 4, reps: 12, lbs: 40}).then( () => {getWeights("test@gmail.com")})
           //updateExercise({id: "9751f315-4e8e-414e-945d-023cd21925ba", userEmail: "test@gmail.com", name: "Test Night Run", miles: 10.0, workoutType: "Run"}).then( () => {getRuns("test@gmail.com")})
