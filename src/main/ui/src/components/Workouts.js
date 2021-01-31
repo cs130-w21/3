@@ -31,7 +31,6 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Grid from '@material-ui/core/Grid';
 
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -211,7 +210,6 @@ export default function Workouts() {
       }
       createExercise(jsonobj)
           .then(response => {
-              console.log("success")
               getRuns("test@gmail.com")
       });
     };
@@ -228,7 +226,6 @@ export default function Workouts() {
       }
       createExercise(jsonobj)
           .then(response => {
-              console.log("success")
               getWeights("test@gmail.com")
       });
     };
@@ -243,12 +240,11 @@ export default function Workouts() {
       if (thursday) { daysOfWeek.push(4); }
       if (friday) { daysOfWeek.push(5); }
       if (saturday) { daysOfWeek.push(6); }
-      console.log(daysOfWeek);
       createWorkout({userEmail:"test@gmail.com", exercises: exerciseList, name: workoutname, daysOfWeek: daysOfWeek}).then( () => {getWorkouts("test@gmail.com")})
     };
 
     function findExercise(value) {
-      const allexercises = weightExerciseTestData.concat(runExerciseTestData);
+      const allexercises = weightExercises.concat(runExercises);
       return allexercises.find( ({ id }) => id === value );
     }
 
@@ -261,6 +257,7 @@ export default function Workouts() {
     // test data - simply replace weightExercises in table with weightExerciseTestData
     // and same with runExercise
 
+    /*
     const weightExerciseTestData = [{"id":"2d7dba988-e445-4f62-9bb6-2890a6b304bb","userEmail":"test@gmail.com","name":"Test Arms","lbs":20,"sets":6,"reps":10,"workoutType":"Weights"},
       {"id":"1d7dba988-e445-4f62-9bb6-2890a6b304bb","userEmail":"test@gmail.com","name":"Test Arms2","lbs":20,"sets":6,"reps":10,"workoutType":"Weights"},
     {"id":"3d7dba988-e445-4f62-9bb6-2890a6b304bb","userEmail":"test@gmail.com","name":"Test Arms3","lbs":20,"sets":6,"reps":10,"workoutType":"Weights"}];
@@ -278,7 +275,7 @@ export default function Workouts() {
         createWorkoutTestData('Shoulders', ['Military Press', 'Ys and Ts'], 'W'),
         createWorkoutTestData('Abs', ['Circuit'], 'M, T, W, Th, F'),
     ];
-
+    */
     return (
         <div>
           <div> test workouts </div>
@@ -343,12 +340,12 @@ export default function Workouts() {
                         )}
                         MenuProps={MenuProps}
                       >
-                        {weightExerciseTestData.map((exercise) => (
+                        {weightExercises.map((exercise) => (
                           <MenuItem key={exercise.id} value={exercise.id}>
                             {exercise.name}
                           </MenuItem>
                         ))}
-                        {runExerciseTestData.map((exercise) => (
+                        {runExercises.map((exercise) => (
                           <MenuItem key={exercise.id} value={exercise.id}>
                             {exercise.name}
                           </MenuItem>
