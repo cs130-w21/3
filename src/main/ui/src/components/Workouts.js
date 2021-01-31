@@ -1,6 +1,6 @@
 import React from "react";
 import { getWeightExercises, getRunExercises, createExercise /* deleteExercise, updateExercise*/} from '../services/ExerciseServices';
-import { getWorkouts as getAPIWorkouts, /*createWorkout, deleteWorkout, updateWorkout*/} from '../services/WorkoutServices';
+import { getWorkouts as getAPIWorkouts, createWorkout /*, deleteWorkout, updateWorkout*/} from '../services/WorkoutServices';
 import { makeStyles } from "@material-ui/core/styles";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -20,6 +20,17 @@ import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import Chip from '@material-ui/core/Chip';
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Grid from '@material-ui/core/Grid';
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -58,12 +69,40 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper
   },
+  popup: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(2),
+  },
   buttons: {
     "& > *": {
-      margin: theme.spacing(1)
+      margin: theme.spacing(1),
     }
-  }
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    maxWidth: 750,
+  },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  chip: {
+    margin: theme.spacing(1),
+  },
 }));
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 export default function Workouts() {
     const [weightExercises, setWeightExercises] = React.useState([]);
@@ -79,6 +118,18 @@ export default function Workouts() {
     const [reps, setReps] = React.useState(0);
     const [sets, setSets] = React.useState(0);
     const classes = useStyles();
+
+    const [openAddWorkout, setOpenAddWorkout] = React.useState(false);
+    const [workoutname, setWorkoutName] = React.useState("");
+    const [exerciseList, setExerciseList] = React.useState([]);
+
+    const [sunday, setSunday] = React.useState(false);
+    const [monday, setMonday] = React.useState(false);
+    const [tuesday, setTuesday] = React.useState(false);
+    const [wednesday, setWednesday] = React.useState(false);
+    const [thursday, setThursday] = React.useState(false);
+    const [friday, setFriday] = React.useState(false);
+    const [saturday, setSaturday] = React.useState(false);
 
     const populateExercises = () => {
         if(populate === true)
@@ -133,6 +184,23 @@ export default function Workouts() {
       setOpen(false);
     };
 
+    const handleClickOpenAddWorkout = () => {
+      setOpenAddWorkout(true);
+    };
+
+    const handleCloseAddWorkout = () => {
+      setOpenAddWorkout(false);
+      setSunday(false);
+      setMonday(false);
+      setTuesday(false);
+      setWednesday(false);
+      setThursday(false);
+      setFriday(false);
+      setSaturday(false);
+      setWorkoutName("");
+      setExerciseList([]);
+    };
+
     const handleAddRun = () => {
       setOpen(false);
       var jsonobj = {
@@ -144,6 +212,7 @@ export default function Workouts() {
       createExercise(jsonobj)
           .then(response => {
               console.log("success")
+              getRuns("test@gmail.com")
       });
     };
 
@@ -160,15 +229,41 @@ export default function Workouts() {
       createExercise(jsonobj)
           .then(response => {
               console.log("success")
+              getWeights("test@gmail.com")
       });
+    };
+
+    const handleAddWorkout = () => {
+      setOpenAddWorkout(false);
+      var daysOfWeek = [];
+      if (sunday) { daysOfWeek.push(0); }
+      if (monday) { daysOfWeek.push(1); }
+      if (tuesday) { daysOfWeek.push(2); }
+      if (wednesday) { daysOfWeek.push(3); }
+      if (thursday) { daysOfWeek.push(4); }
+      if (friday) { daysOfWeek.push(5); }
+      if (saturday) { daysOfWeek.push(6); }
+      console.log(daysOfWeek);
+      createWorkout({userEmail:"test@gmail.com", exercises: exerciseList, name: workoutname, daysOfWeek: daysOfWeek}).then( () => {getWorkouts("test@gmail.com")})
+    };
+
+    function findExercise(value) {
+      const allexercises = weightExerciseTestData.concat(runExerciseTestData);
+      return allexercises.find( ({ id }) => id === value );
+    }
+
+    const handleChangeExerciseList = (event) => {
+      setExerciseList(event.target.value);
     };
 
     // Test data due to issues with my local build
     // If your .jar build doesn't connect to DDB, feel free to use following
     // test data - simply replace weightExercises in table with weightExerciseTestData
     // and same with runExercise
-    /*
-    const weightExerciseTestData = [{"id":"d7dba988-e445-4f62-9bb6-2890a6b304bb","userEmail":"test@gmail.com","name":"Test Arms","lbs":20,"sets":6,"reps":10,"workoutType":"Weights"}];
+
+    const weightExerciseTestData = [{"id":"2d7dba988-e445-4f62-9bb6-2890a6b304bb","userEmail":"test@gmail.com","name":"Test Arms","lbs":20,"sets":6,"reps":10,"workoutType":"Weights"},
+      {"id":"1d7dba988-e445-4f62-9bb6-2890a6b304bb","userEmail":"test@gmail.com","name":"Test Arms2","lbs":20,"sets":6,"reps":10,"workoutType":"Weights"},
+    {"id":"3d7dba988-e445-4f62-9bb6-2890a6b304bb","userEmail":"test@gmail.com","name":"Test Arms3","lbs":20,"sets":6,"reps":10,"workoutType":"Weights"}];
     const runExerciseTestData = [{"id":"abc","userEmail":"test@gmail.com","name":"Test","miles":2.5,"workoutType":"Run"}];
 
     function createWorkoutTestData(workout, exercises, d_o_w) {
@@ -183,18 +278,93 @@ export default function Workouts() {
         createWorkoutTestData('Shoulders', ['Military Press', 'Ys and Ts'], 'W'),
         createWorkoutTestData('Abs', ['Circuit'], 'M, T, W, Th, F'),
     ];
-    */
 
     return (
         <div>
           <div> test workouts </div>
           <div> {JSON.stringify(workouts)} </div>
-          <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-            Add Exercise
-          </Button>
+          <Grid container className={classes.buttons} >
+            <Button variant="outlined" color="primary" onClick={handleClickOpenAddWorkout}>
+              Add Workout
+            </Button>
+            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+              Add Exercise
+            </Button>
+          </Grid>
             <h1>Workouts</h1>
             {populateExercises()}
             <h2>Lifting Weights</h2>
+            <div className={classes.root}>
+              <Dialog
+                open={openAddWorkout}
+                onClose={handleCloseAddWorkout}
+                aria-labelledby="add-workout-title"
+              >
+                <form className={classes.popup} onSubmit={handleAddWorkout}>
+                  <TextField
+                    autoFocus
+                    value={workoutname}
+                    onInput={ e=>setWorkoutName(e.target.value)}
+                    margin="dense"
+                    name="workoutname"
+                    id="workoutname"
+                    label="Workout Name"
+                    type="text"
+                    required={true}
+                    fullWidth
+                  />
+                  <p></p>
+                  <p>What days of the week will you do this workout?</p>
+                  <FormGroup row>
+                    <FormControlLabel control={<Checkbox checked={sunday} onChange={(event) => {setSunday(event.target.checked);}}/>} label="Sunday"/>
+                    <FormControlLabel control={<Checkbox checked={monday} onChange={(event) => {setMonday(event.target.checked);}}/>} label="Monday"/>
+                    <FormControlLabel control={<Checkbox checked={tuesday} onChange={(event) => {setTuesday(event.target.checked);}}/>} label="Tuesday"/>
+                    <FormControlLabel control={<Checkbox checked={wednesday} onChange={(event) => {setWednesday(event.target.checked);}}/>} label="Wednesday"/>
+                    <FormControlLabel control={<Checkbox checked={thursday} onChange={(event) => {setThursday(event.target.checked);}}/>} label="Thursday"/>
+                    <FormControlLabel control={<Checkbox checked={friday} onChange={(event) => {setFriday(event.target.checked);}}/>} label="Friday"/>
+                    <FormControlLabel control={<Checkbox checked={saturday} onChange={(event) => {setSaturday(event.target.checked);}}/>} label="Saturday"/>
+                  </FormGroup>
+                  <FormGroup row>
+                    <FormControl className={classes.formControl}>
+                      <InputLabel id="select-exercises-chip-label">Exercises</InputLabel>
+                      <Select
+                        labelId="select-exercises-chip-label"
+                        id="select-exercises-chip"
+                        multiple
+                        value={exerciseList}
+                        onChange={handleChangeExerciseList}
+                        input={<Input id="select-exercises-chip" />}
+                        renderValue={(selected) => (
+                          <div className={classes.chips}>
+                            {selected.map((value) => (
+                              <Chip key={value} label={findExercise(value).name} className={classes.chip} />
+                            ))}
+                          </div>
+                        )}
+                        MenuProps={MenuProps}
+                      >
+                        {weightExerciseTestData.map((exercise) => (
+                          <MenuItem key={exercise.id} value={exercise.id}>
+                            {exercise.name}
+                          </MenuItem>
+                        ))}
+                        {runExerciseTestData.map((exercise) => (
+                          <MenuItem key={exercise.id} value={exercise.id}>
+                            {exercise.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </FormGroup>
+                  <Button type="submit" color="primary">
+                    Add
+                  </Button>
+                  <Button onClick={handleCloseAddWorkout} color="secondary">
+                    Cancel
+                  </Button>
+                </form>
+              </Dialog>
+            </div>
             <div className={classes.root}>
               <Dialog
                 open={open}
