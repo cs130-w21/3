@@ -1,5 +1,5 @@
 import React from "react";
-import { getWeightExercises, getRunExercises, createExercise /* deleteExercise, updateExercise*/} from '../services/ExerciseServices';
+import { getWeightExercises, getRunExercises, createExercise, deleteExercise /*, updateExercise*/} from '../services/ExerciseServices';
 import { getWorkouts as getAPIWorkouts, createWorkout /*, deleteWorkout, updateWorkout*/} from '../services/WorkoutServices';
 import { makeStyles } from "@material-ui/core/styles";
 import Table from '@material-ui/core/Table';
@@ -15,6 +15,8 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import FitnessCenterIcon from "@material-ui/icons/FitnessCenter";
 import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
@@ -30,6 +32,11 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -108,6 +115,8 @@ export default function Workouts() {
     const [workouts, setWorkouts] = React.useState([]);
     const [runExercises, setRunExercises] = React.useState([]);
     const [populate, setPopulate] = React.useState(true);
+    const [deletePopup, setDeletePopup] = React.useState(false);
+    const [deleteId, setDeleteId] = React.useState("");
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState(0);
     const [miles, setMiles] = React.useState(0);
@@ -183,6 +192,11 @@ export default function Workouts() {
       setOpen(false);
     };
 
+    const handleCloseDeletePopup = () => {
+      setDeletePopup(false);
+      setDeleteId("");
+    };
+
     const handleClickOpenAddWorkout = () => {
       setOpenAddWorkout(true);
     };
@@ -252,6 +266,19 @@ export default function Workouts() {
       setExerciseList(event.target.value);
     };
 
+    const handleDeleteExercise = () => {
+      setDeletePopup(false);
+      const allexercises = weightExercises.concat(runExercises);
+      var exerciseToDelete = allexercises.find( ({ id }) => id === deleteId );
+      console.log(exerciseToDelete);
+      deleteExercise(exerciseToDelete).then( () => {getWorkouts("test@gmail.com")})
+    };
+
+    function setDeleteState(exercise_id) {
+      setDeletePopup(true);
+      setDeleteId(exercise_id);
+    }
+
     // Test data due to issues with my local build
     // If your .jar build doesn't connect to DDB, feel free to use following
     // test data - simply replace weightExercises in table with weightExerciseTestData
@@ -266,6 +293,7 @@ export default function Workouts() {
     function createWorkoutTestData(workout, exercises, d_o_w) {
         return { workout, exercises, d_o_w };
     }
+
     const workoutTestData = [
         createWorkoutTestData('Chest', ['Bench Press', 'Incline Dumbbell Press'], 'M, F'),
         createWorkoutTestData('Tris', ['Dips', 'Cable Pull'], 'M, F'),
@@ -276,6 +304,7 @@ export default function Workouts() {
         createWorkoutTestData('Abs', ['Circuit'], 'M, T, W, Th, F'),
     ];
     */
+
     return (
         <div>
           <div> test workouts </div>
@@ -288,6 +317,27 @@ export default function Workouts() {
               Add Exercise
             </Button>
           </Grid>
+          <Dialog
+            open={deletePopup}
+            onClose={handleCloseDeletePopup}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Are you sure you want to delete this exercise?"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                This will permenantly delete this exercise from your profile.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDeletePopup} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handleDeleteExercise} color="primary" autoFocus>
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
             <h1>Workouts</h1>
             {populateExercises()}
             <h2>Lifting Weights</h2>
@@ -480,6 +530,7 @@ export default function Workouts() {
                 <Table aria-label="weight exercises table">
                     <TableHead>
                     <TableRow>
+                        <TableCell></TableCell>
                         <TableCell>Exercise</TableCell>
                         <TableCell align="right">Weight (Lbs)</TableCell>
                         <TableCell align="right">Sets</TableCell>
@@ -489,6 +540,14 @@ export default function Workouts() {
                     <TableBody>
                     {weightExercises.map((exercise) => (
                         <TableRow key={exercise.id}>
+                        <TableCell>
+                          <IconButton color="secondary" aria-label="delete exercise" size="small" onClick={() => setDeleteState(exercise.id)}>
+                            <DeleteIcon />
+                          </IconButton>
+                          <IconButton color="black" aria-label="edit exercise" size="small">
+                            <EditIcon />
+                          </IconButton>
+                        </TableCell>
                         <TableCell component="th" scope="row">
                             {exercise.name}
                         </TableCell>
@@ -500,11 +559,13 @@ export default function Workouts() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <h2></h2>
             <h2>Going for a Run</h2>
             <TableContainer component={Paper}>
                 <Table aria-label="run exercises table">
                     <TableHead>
                     <TableRow>
+                        <TableCell></TableCell>
                         <TableCell>Exercise</TableCell>
                         <TableCell align="right">Miles</TableCell>
                     </TableRow>
@@ -512,6 +573,14 @@ export default function Workouts() {
                     <TableBody>
                     {runExercises.map((exercise) => (
                         <TableRow key={exercise.id}>
+                        <TableCell>
+                          <IconButton color="secondary" aria-label="delete exercise" size="small" onClick={() => setDeleteState(exercise.id)}>
+                            <DeleteIcon />
+                          </IconButton>
+                          <IconButton color="black" aria-label="edit exercise" size="small">
+                            <EditIcon />
+                          </IconButton>
+                        </TableCell>
                         <TableCell component="th" scope="row">
                             {exercise.name}
                         </TableCell>
