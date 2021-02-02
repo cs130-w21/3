@@ -559,7 +559,6 @@ export default function Workouts() {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <h2></h2>
             <h2>Going for a Run</h2>
             <TableContainer component={Paper}>
                 <Table aria-label="run exercises table">
