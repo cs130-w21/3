@@ -246,7 +246,7 @@ export default function Workouts() {
 
     const handleAddWorkout = () => {
       setOpenAddWorkout(false);
-      var daysOfWeek = [];
+      var daysOfWeek = [-1];
       if (sunday) { daysOfWeek.push(0); }
       if (monday) { daysOfWeek.push(1); }
       if (tuesday) { daysOfWeek.push(2); }
@@ -271,7 +271,10 @@ export default function Workouts() {
       const allexercises = weightExercises.concat(runExercises);
       var exerciseToDelete = allexercises.find( ({ id }) => id === deleteId );
       console.log(exerciseToDelete);
-      deleteExercise(exerciseToDelete).then( () => {getWorkouts("test@gmail.com")})
+      deleteExercise(exerciseToDelete).then( () => {
+        getWeights("test@gmail.com");
+        getRuns("test@gmail.com");
+      })
     };
 
     function setDeleteState(exercise_id) {
