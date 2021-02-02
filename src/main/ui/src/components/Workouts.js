@@ -1,6 +1,6 @@
 import React from "react";
 import { getWeightExercises, getRunExercises, createExercise /* deleteExercise, updateExercise*/} from '../services/ExerciseServices';
-import { getWorkouts as getAPIWorkouts, /*createWorkout, deleteWorkout, updateWorkout*/} from '../services/WorkoutServices';
+import { deleteWorkout, getWorkouts as getAPIWorkouts, /*createWorkout, deleteWorkout, updateWorkout*/} from '../services/WorkoutServices';
 import { makeStyles } from "@material-ui/core/styles";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -20,6 +20,7 @@ import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
+import Calendar from './calendar';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -163,6 +164,10 @@ export default function Workouts() {
       });
     };
 
+    const deleteDayFromWorkout = (event) => {
+      console.log(event)
+    }
+
     // Test data due to issues with my local build
     // If your .jar build doesn't connect to DDB, feel free to use following
     // test data - simply replace weightExercises in table with weightExerciseTestData
@@ -186,13 +191,14 @@ export default function Workouts() {
     */
 
     return (
-        <div>
-          <div> test workouts </div>
-          <div> {JSON.stringify(workouts)} </div>
-          <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-            Add Exercise
-          </Button>
-            <h1>Workouts</h1>
+        <div className="app">
+          <h1>Workouts</h1>
+            <Calendar workouts={workouts} removeEventFromCal={deleteDayFromWorkout} email={"test@gmail.com"}/>
+            <h1>Exercises {'   '}
+              <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+                Add Exercise
+              </Button>
+            </h1>
             {populateExercises()}
             <h2>Lifting Weights</h2>
             <div className={classes.root}>
@@ -309,6 +315,7 @@ export default function Workouts() {
                 </TabPanel>
               </Dialog>
             </div>
+            <div className="tables">
             <TableContainer component={Paper}>
                 <Table aria-label="weight exercises table">
                     <TableHead>
@@ -333,7 +340,9 @@ export default function Workouts() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            </div>
             <h2>Going for a Run</h2>
+            <div className="tables">
             <TableContainer component={Paper}>
                 <Table aria-label="run exercises table">
                     <TableHead>
@@ -354,6 +363,7 @@ export default function Workouts() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            </div>
         </div>
     );
 }
