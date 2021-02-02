@@ -60,7 +60,7 @@ export async function deleteExercise(exercise) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(exercise)
       })
-    return await response.json();
+    return response;
 }
 
 
