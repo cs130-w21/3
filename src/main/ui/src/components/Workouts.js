@@ -1,6 +1,6 @@
 import React from "react";
 import { getWeightExercises, getRunExercises, createExercise /* deleteExercise, updateExercise*/} from '../services/ExerciseServices';
-import { deleteWorkout, getWorkouts as getAPIWorkouts, /*createWorkout, deleteWorkout, updateWorkout*/} from '../services/WorkoutServices';
+import { getWorkouts as getAPIWorkouts, /*deleteWorkout, createWorkout, deleteWorkout, updateWorkout*/} from '../services/WorkoutServices';
 import { makeStyles } from "@material-ui/core/styles";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
