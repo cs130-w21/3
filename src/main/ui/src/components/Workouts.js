@@ -22,6 +22,7 @@ import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
+import Calendar from './calendar';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -31,7 +32,6 @@ import Select from "@material-ui/core/Select";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -244,6 +244,9 @@ export default function Workouts() {
       });
     };
 
+    const deleteDayFromWorkout = (event) => {
+      console.log(event)
+    }
     const handleAddWorkout = () => {
       setOpenAddWorkout(false);
       var daysOfWeek = [-1];
@@ -309,17 +312,18 @@ export default function Workouts() {
     */
 
     return (
-        <div>
-          <div> test workouts </div>
-          <div> {JSON.stringify(workouts)} </div>
-          <Grid container className={classes.buttons} >
+        <div className="app">
+          <h1>Workouts {' '}
             <Button variant="outlined" color="primary" onClick={handleClickOpenAddWorkout}>
               Add Workout
             </Button>
+          </h1>
+            <Calendar workouts={workouts} removeEventFromCal={deleteDayFromWorkout} email={"test@gmail.com"}/>
+            <h1>Exercises {'   '}
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
               Add Exercise
             </Button>
-          </Grid>
+          </h1>
           <Dialog
             open={deletePopup}
             onClose={handleCloseDeletePopup}
@@ -341,7 +345,6 @@ export default function Workouts() {
               </Button>
             </DialogActions>
           </Dialog>
-            <h1>Workouts</h1>
             {populateExercises()}
             <h2>Lifting Weights</h2>
             <div className={classes.root}>
@@ -384,6 +387,7 @@ export default function Workouts() {
                         value={exerciseList}
                         onChange={handleChangeExerciseList}
                         input={<Input id="select-exercises-chip" />}
+                        required={true}
                         renderValue={(selected) => (
                           <div className={classes.chips}>
                             {selected.map((value) => (
@@ -529,6 +533,7 @@ export default function Workouts() {
                 </TabPanel>
               </Dialog>
             </div>
+            <div className="tables">
             <TableContainer component={Paper}>
                 <Table aria-label="weight exercises table">
                     <TableHead>
@@ -562,7 +567,9 @@ export default function Workouts() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            </div>
             <h2>Going for a Run</h2>
+            <div className="tables">
             <TableContainer component={Paper}>
                 <Table aria-label="run exercises table">
                     <TableHead>
@@ -592,6 +599,7 @@ export default function Workouts() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            </div>
         </div>
     );
 }
