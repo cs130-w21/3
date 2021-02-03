@@ -247,7 +247,7 @@ export default function Workouts() {
 
     const deleteDayFromWorkout = (event) => {
       console.log(event)
-
+    }
     const handleAddWorkout = () => {
       setOpenAddWorkout(false);
       var daysOfWeek = [-1];
@@ -314,17 +314,17 @@ export default function Workouts() {
 
     return (
         <div className="app">
-          <h1>Workouts</h1>
-            <Calendar workouts={workouts} removeEventFromCal={deleteDayFromWorkout} email={"test@gmail.com"}/>
-            <h1>Exercises {'   '}
-          <Grid container className={classes.buttons} >
+          <h1>Workouts {' '}
             <Button variant="outlined" color="primary" onClick={handleClickOpenAddWorkout}>
               Add Workout
             </Button>
+          </h1>
+            <Calendar workouts={workouts} removeEventFromCal={deleteDayFromWorkout} email={"test@gmail.com"}/>
+            <h1>Exercises {'   '}
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
               Add Exercise
             </Button>
-          </Grid>
+          </h1>
           <Dialog
             open={deletePopup}
             onClose={handleCloseDeletePopup}
@@ -346,7 +346,6 @@ export default function Workouts() {
               </Button>
             </DialogActions>
           </Dialog>
-            <h1>Workouts</h1>
             {populateExercises()}
             <h2>Lifting Weights</h2>
             <div className={classes.root}>
@@ -389,6 +388,7 @@ export default function Workouts() {
                         value={exerciseList}
                         onChange={handleChangeExerciseList}
                         input={<Input id="select-exercises-chip" />}
+                        required={true}
                         renderValue={(selected) => (
                           <div className={classes.chips}>
                             {selected.map((value) => (
