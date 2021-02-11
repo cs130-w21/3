@@ -1,5 +1,5 @@
 import React from "react";
-import { getWeightExercises, getRunExercises, createExercise, deleteExercise /*, updateExercise*/} from '../services/ExerciseServices';
+import { getWeightExercises, getRunExercises, createExercise, deleteExercise, updateExercise} from '../services/ExerciseServices';
 import { getWorkouts as getAPIWorkouts, createWorkout /*, deleteWorkout, updateWorkout*/} from '../services/WorkoutServices';
 import { makeStyles } from "@material-ui/core/styles";
 import Table from '@material-ui/core/Table';
@@ -117,6 +117,9 @@ export default function Workouts() {
     const [populate, setPopulate] = React.useState(true);
     const [deletePopup, setDeletePopup] = React.useState(false);
     const [deleteId, setDeleteId] = React.useState("");
+    const [updateRunPopup, setUpdateRunPopup] = React.useState(false);
+    const [updateWeightPopup, setUpdateWeightPopup] = React.useState(false);
+    const [updateId, setUpdateId] = React.useState("");
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState(0);
     const [miles, setMiles] = React.useState(0);
@@ -147,11 +150,11 @@ export default function Workouts() {
           //deleteWorkout({id: "b9545696-9587-4907-86c9-80402914d23b", userEmail: "test@gmail.com", name: "Test Workout", exercises: ["exerciseID1", "exerciseID2"], daysOfWeek: [-1]}).then( () => {getWorkouts("test@gmail.com")})
           //updateWorkout({id: "49627d29-06fd-4b80-b9cd-d0a46d799c01", userEmail: "test@gmail.com", name: "Test Workout", exercises: ["exerciseID1","exerciseID2", "exerciseID3"], daysOfWeek: [-1]}).then( () => {getWorkouts("test@gmail.com")})
           //createExercise({userEmail: "test@gmail.com", workoutType: "Run", name: "Test", miles: 3.12}).then( () => {getRuns("test@gmail.com")})
-          //createExercise({userEmail: "test@gmail.com", workoutType: "Weights", name: "Test", sets: 4, reps: 12, lbs: 40}).then( () => {getWeights("test@gmail.com")})
+          //createExercise({userEmail: "test@gmail.com", workoutType: "Weight", name: "Test", sets: 4, reps: 12, lbs: 40}).then( () => {getWeights("test@gmail.com")})
           //updateExercise({id: "9751f315-4e8e-414e-945d-023cd21925ba", userEmail: "test@gmail.com", name: "Test Night Run", miles: 10.0, workoutType: "Run"}).then( () => {getRuns("test@gmail.com")})
-          //updateExercise({id: "ec5d2895-f639-432b-a9c4-866b43c443f5", userEmail: "test@gmail.com", name: "Test", lbs: 100, sets: 4, reps: 12, workoutType: "Weights"}).then( () => {getWeights("test@gmail.com")})
+          //updateExercise({id: "ec5d2895-f639-432b-a9c4-866b43c443f5", userEmail: "test@gmail.com", name: "Test", lbs: 100, sets: 4, reps: 12, workoutType: "Weight"}).then( () => {getWeights("test@gmail.com")})
           //deleteExercise({id: "9751f315-4e8e-414e-945d-023cd21925ba", userEmail: "test@gmail.com", name: "Test Night Run", miles: 1.33, workoutType: "Run"}).then( () => {getRuns("test@gmail.com")})
-          //deleteExercise({id: "ec5d2895-f639-432b-a9c4-866b43c443f5", userEmail: "test@gmail.com", name: "Test", lbs: 40, sets: 4, reps: 12, workoutType: "Weights"}).then( () => {getWeights("test@gmail.com")})
+          //deleteExercise({id: "ec5d2895-f639-432b-a9c4-866b43c443f5", userEmail: "test@gmail.com", name: "Test", lbs: 40, sets: 4, reps: 12, workoutType: "Weight"}).then( () => {getWeights("test@gmail.com")})
           getWorkouts("test@gmail.com")
           getWeights("test@gmail.com");
           getRuns("test@gmail.com");
@@ -285,6 +288,75 @@ export default function Workouts() {
       setDeleteId(exercise_id);
     }
 
+    const handleCloseUpdatePopup = () => {
+      setUpdateRunPopup(false);
+      setUpdateWeightPopup(false);
+      setUpdateId("");
+      setMiles(0);
+      setWeightName("");
+      setRunName("");
+      setReps(0);
+      setSets(0);
+      setWeight(0);
+    };
+
+    const handleUpdateExercise = () => {
+      setUpdateRunPopup(false);
+      setUpdateWeightPopup(false);
+      var exerciseToUpdate = findExercise(updateId);
+      console.log(exerciseToUpdate);
+      if(exerciseToUpdate.exerciseType === "Run"){
+        var runobj = {
+        "id":updateId,
+        "userEmail":"test@gmail.com",
+        "name":runname,
+        "miles":miles,
+        "exerciseType":"Run"
+         }
+         updateExercise(runobj).then(response => {
+               getRuns("test@gmail.com")
+         });
+         setRunName("");
+         setMiles(0);
+      }
+      if(exerciseToUpdate.exerciseType === "Weight"){
+        var weightobj = {
+        "id":updateId,
+        "userEmail":"test@gmail.com",
+        "name":weightname,
+        "lbs":weight,
+        "sets":sets,
+        "reps":reps,
+        "exerciseType":"Weight"
+         }
+      updateExercise(weightobj).then(response => {
+          getWeights("test@gmail.com")
+      });
+        setWeightName("");
+        setReps(0);
+        setSets(0);
+        setWeight(0);
+      }
+    };
+
+    function setUpdateRunState(exercise_id) {
+      setUpdateRunPopup(true);
+      setUpdateId(exercise_id);
+      var exerciseEdit = findExercise(exercise_id);
+      setRunName(exerciseEdit.name);
+      setMiles(exerciseEdit.miles);
+    }
+
+    function setUpdateWeightState(exercise_id) {
+      setUpdateWeightPopup(true);
+      setUpdateId(exercise_id);
+      var exerciseEdit = findExercise(exercise_id);
+      setWeightName(exerciseEdit.name);
+      setReps(exerciseEdit.reps);
+      setWeight(exerciseEdit.lbs);
+      setSets(exerciseEdit.sets);
+    }
+
     // Test data due to issues with my local build
     // If your .jar build doesn't connect to DDB, feel free to use following
     // test data - simply replace weightExercises in table with weightExerciseTestData
@@ -295,11 +367,9 @@ export default function Workouts() {
       {"id":"1d7dba988-e445-4f62-9bb6-2890a6b304bb","userEmail":"test@gmail.com","name":"Test Arms2","lbs":20,"sets":6,"reps":10,"workoutType":"Weights"},
     {"id":"3d7dba988-e445-4f62-9bb6-2890a6b304bb","userEmail":"test@gmail.com","name":"Test Arms3","lbs":20,"sets":6,"reps":10,"workoutType":"Weights"}];
     const runExerciseTestData = [{"id":"abc","userEmail":"test@gmail.com","name":"Test","miles":2.5,"workoutType":"Run"}];
-
     function createWorkoutTestData(workout, exercises, d_o_w) {
         return { workout, exercises, d_o_w };
     }
-
     const workoutTestData = [
         createWorkoutTestData('Chest', ['Bench Press', 'Incline Dumbbell Press'], 'M, F'),
         createWorkoutTestData('Tris', ['Dips', 'Cable Pull'], 'M, F'),
@@ -344,6 +414,104 @@ export default function Workouts() {
                 Delete
               </Button>
             </DialogActions>
+          </Dialog>
+          <Dialog
+            open={updateRunPopup}
+            onClose={handleCloseUpdatePopup}
+            aria-labelledby="alert-dialog-title"
+          >
+            <DialogTitle id="alert-dialog-title">{"Edit this exercise"}</DialogTitle>
+              <form className={classes.popup} onSubmit={handleUpdateExercise}>
+                <TextField
+                  autoFocus
+                  value={runname}
+                  onInput={ e=>setRunName(e.target.value)}
+                  margin="dense"
+                  name="runname"
+                  id="runname"
+                  label="Exercise Name"
+                  type="text"
+                  required={false}
+                  fullWidth
+                />
+                <TextField
+                  value={miles}
+                  onInput={ e=>setMiles(e.target.value)}
+                  margin="dense"
+                  name="miles"
+                  id="miles"
+                  label="Miles"
+                  type="number"
+                  required={false}
+                  fullWidth
+                />
+                <Button onClick={handleCloseUpdatePopup} color="secondary">
+                  Cancel
+                </Button>
+                <Button onClick={handleUpdateExercise} color="primary">
+                  Edit
+                </Button>
+        </form>
+          </Dialog>
+          <Dialog
+            open={updateWeightPopup}
+            onClose={handleCloseUpdatePopup}
+            aria-labelledby="alert-dialog-title"
+          >
+            <DialogTitle id="alert-dialog-title">{"Edit this exercise"}</DialogTitle>
+              <form className={classes.popup} onSubmit={handleUpdateExercise}>
+                <TextField
+                  autoFocus
+                  value={weightname}
+                  onInput={ e=>setWeightName(e.target.value)}
+                  margin="dense"
+                  name="weightname"
+                  id="weightname"
+                  label="Exercise Name"
+                  type="text"
+                  required={false}
+                  fullWidth
+                />
+                <TextField
+                  value={weight}
+                  onInput={ e=>setWeight(e.target.value)}
+                  margin="dense"
+                  name="weight"
+                  id="weight"
+                  label="Weight (lbs)"
+                  type="number"
+                  required={false}
+                  fullWidth
+                />
+                <TextField
+                  value={sets}
+                  onInput={ e=>setSets(e.target.value)}
+                  margin="dense"
+                  name="sets"
+                  id="sets"
+                  label="Sets"
+                  type="number"
+                  required={false}
+                  fullWidth
+                />
+                <TextField
+                  value={reps}
+                  onInput={ e=>setReps(e.target.value)}
+                  margin="dense"
+                  name="reps"
+                  id="reps"
+                  label="Reps"
+                  type="number"
+                  required={false}
+                  fullWidth
+                />
+                <Button onClick={handleCloseUpdatePopup} color="secondary">
+                  Cancel
+                </Button>
+                <Button type="submit" color="primary">
+                  Edit
+                </Button>
+        </form>
           </Dialog>
             {populateExercises()}
             <h2>Lifting Weights</h2>
@@ -552,7 +720,7 @@ export default function Workouts() {
                           <IconButton color="secondary" aria-label="delete exercise" size="small" onClick={() => setDeleteState(exercise.id)}>
                             <DeleteIcon />
                           </IconButton>
-                          <IconButton color="black" aria-label="edit exercise" size="small">
+                          <IconButton color="black" aria-label="edit exercise" size="small" onClick={() => setUpdateWeightState(exercise.id)}>
                             <EditIcon />
                           </IconButton>
                         </TableCell>
@@ -586,7 +754,7 @@ export default function Workouts() {
                           <IconButton color="secondary" aria-label="delete exercise" size="small" onClick={() => setDeleteState(exercise.id)}>
                             <DeleteIcon />
                           </IconButton>
-                          <IconButton color="black" aria-label="edit exercise" size="small">
+                          <IconButton color="black" aria-label="edit exercise" size="small" onClick={() => setUpdateRunState(exercise.id)}>
                             <EditIcon />
                           </IconButton>
                         </TableCell>

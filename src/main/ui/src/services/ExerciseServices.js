@@ -80,5 +80,5 @@ export async function updateExercise(exercise) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(exercise)
       })
-    return await response.json();
+    return response;
 }
