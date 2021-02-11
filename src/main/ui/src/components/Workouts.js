@@ -313,8 +313,7 @@ export default function Workouts() {
         "miles":miles,
         "exerciseType":"Run"
          }
-         updateExercise(runobj).
-            then (response => {
+         updateExercise(runobj).then(response => {
                getRuns("test@gmail.com")
          });
          setRunName("");
@@ -330,8 +329,7 @@ export default function Workouts() {
         "reps":reps,
         "exerciseType":"Weight"
          }
-      updateExercise(weightobj).
-        then (response => {
+      updateExercise(weightobj).then(response => {
           getWeights("test@gmail.com")
       });
         setWeightName("");
