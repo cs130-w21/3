@@ -268,6 +268,12 @@ export default function Workouts() {
       return allexercises.find( ({ id }) => id === value );
     }
 
+    function getExerciseName(value) {
+        let exercise = findExercise(value)
+        if (exercise) return exercise.name;
+        return "";
+    }
+
     const handleChangeExerciseList = (event) => {
       setExerciseList(event.target.value);
     };
@@ -389,6 +395,41 @@ export default function Workouts() {
             </Button>
           </h1>
             <Calendar workouts={workouts} removeEventFromCal={deleteDayFromWorkout} email={"test@gmail.com"}/>
+            <div className="tables">
+            <TableContainer component={Paper}>
+                <Table aria-label="workout table">
+                    <TableHead>
+                    <TableRow>
+                        <TableCell></TableCell>
+                        <TableCell>Workout</TableCell>
+                        <TableCell align="right">Exercises</TableCell>
+                    </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {workouts.map((workout) => (
+                        <TableRow key={workout.id}>
+                        <TableCell>
+                          <IconButton color="secondary" aria-label="delete workout" size="small">
+                            <DeleteIcon />
+                          </IconButton>
+                          <IconButton color="black" aria-label="edit workout" size="small">
+                            <EditIcon />
+                          </IconButton>
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                            {workout.name}
+                        </TableCell>
+                        <TableCell align="right">{workout.exercises.map((exerciseID) => (
+                            <div>
+                                {getExerciseName(exerciseID)}
+                            </div>
+                        ))}</TableCell>
+                        </TableRow>
+                    ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            </div>
             <h1>Exercises {'   '}
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
               Add Exercise
@@ -514,7 +555,7 @@ export default function Workouts() {
         </form>
           </Dialog>
             {populateExercises()}
-            <h2>Lifting Weights</h2>
+            <h2>Lifting</h2>
             <div className={classes.root}>
               <Dialog
                 open={openAddWorkout}
@@ -736,7 +777,7 @@ export default function Workouts() {
                 </Table>
             </TableContainer>
             </div>
-            <h2>Going for a Run</h2>
+            <h2>Running</h2>
             <div className="tables">
             <TableContainer component={Paper}>
                 <Table aria-label="run exercises table">
