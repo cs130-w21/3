@@ -31,7 +31,7 @@ public class ExerciseController {
     @GetMapping(path = "/weights")
     @ResponseBody
     public List<ExerciseWeight> getWeightExercises(@RequestParam String userEmail) {
-        log.info("ExerciseController: get run exercises");
+        log.info("ExerciseController: get weight exercises");
         return weightExerciseDao.getWeightExercises(userEmail);
     }
 
