@@ -8,7 +8,7 @@ const renameKey = (obj, oldKey, newKey) => {
     delete obj[oldKey];
 }
 
-const arr = props.workouts;
+const arr =  JSON.parse(JSON.stringify(props.workouts));
 arr.forEach( obj => renameKey( obj, 'name', 'title' ) );
 const calendarEvents = arr
 
