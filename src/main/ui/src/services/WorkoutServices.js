@@ -31,7 +31,7 @@ export async function deleteWorkout(workout) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(workout)
       })
-    return await response.json();
+    return response;
 }
 
 
