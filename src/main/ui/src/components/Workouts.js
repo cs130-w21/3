@@ -1,6 +1,6 @@
 import React from "react";
 import { getWeightExercises, getRunExercises, createExercise, deleteExercise, updateExercise} from '../services/ExerciseServices';
-import { getWorkouts as getAPIWorkouts, createWorkout, deleteWorkout /*, updateWorkout*/} from '../services/WorkoutServices';
+import { getWorkouts as getAPIWorkouts, createWorkout, deleteWorkout, updateWorkout} from '../services/WorkoutServices';
 import { makeStyles } from "@material-ui/core/styles";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -135,6 +135,8 @@ export default function Workouts() {
     const [openAddWorkout, setOpenAddWorkout] = React.useState(false);
     const [workoutname, setWorkoutName] = React.useState("");
     const [exerciseList, setExerciseList] = React.useState([]);
+    const [openUpdateWorkout, setOpenUpdateWorkout] = React.useState(false);
+    const [updateWorkoutId, setUpdateWorkoutId] = React.useState("");
 
     const [sunday, setSunday] = React.useState(false);
     const [monday, setMonday] = React.useState(false);
@@ -381,6 +383,41 @@ export default function Workouts() {
       setSets(exerciseEdit.sets);
     }
 
+    function setUpdateWorkoutState(workoutEdit) {
+      setOpenUpdateWorkout(true);
+      setUpdateWorkoutId(workoutEdit.id);
+      setSunday(workoutEdit.daysOfWeek.includes(0));
+      setMonday(workoutEdit.daysOfWeek.includes(1));
+      setTuesday(workoutEdit.daysOfWeek.includes(2));
+      setWednesday(workoutEdit.daysOfWeek.includes(3));
+      setThursday(workoutEdit.daysOfWeek.includes(4));
+      setFriday(workoutEdit.daysOfWeek.includes(5));
+      setSaturday(workoutEdit.daysOfWeek.includes(6));
+      setExerciseList(workoutEdit.exercises);
+      setWorkoutName(workoutEdit.name);
+    }
+
+    const handleUpdateWorkout = () => {
+      setOpenUpdateWorkout(false);
+      var daysOfWeek = [-1];
+      if (sunday) { daysOfWeek.push(0); }
+      if (monday) { daysOfWeek.push(1); }
+      if (tuesday) { daysOfWeek.push(2); }
+      if (wednesday) { daysOfWeek.push(3); }
+      if (thursday) { daysOfWeek.push(4); }
+      if (friday) { daysOfWeek.push(5); }
+      if (saturday) { daysOfWeek.push(6); }
+      updateWorkout({id:updateWorkoutId, userEmail:"test@gmail.com", exercises:exerciseList, name:workoutname, daysOfWeek:daysOfWeek}).then( () => {getWorkouts("test@gmail.com")});
+      handleCloseAddWorkout();
+      setUpdateWorkoutId("");
+    };
+
+    const handleCloseUpdateWorkout = () => {
+      setOpenUpdateWorkout(false);
+      handleCloseAddWorkout();
+      setUpdateWorkoutId("");
+    };
+
     // Test data due to issues with my local build
     // If your .jar build doesn't connect to DDB, feel free to use following
     // test data - simply replace weightExercises in table with weightExerciseTestData
@@ -429,7 +466,7 @@ export default function Workouts() {
                           <IconButton color="secondary" aria-label="delete workout" size="small" onClick={() => setWorkoutDeleteState(workout.id)}>
                             <DeleteIcon />
                           </IconButton>
-                          <IconButton color="black" aria-label="edit workout" size="small">
+                          <IconButton color="black" aria-label="edit workout" size="small" onClick={() => setUpdateWorkoutState(workout)}>
                             <EditIcon />
                           </IconButton>
                         </TableCell>
@@ -657,11 +694,80 @@ export default function Workouts() {
                       </Select>
                     </FormControl>
                   </FormGroup>
+                  <Button onClick={handleCloseAddWorkout} color="secondary">
+                    Cancel
+                  </Button>
                   <Button type="submit" color="primary">
                     Add
                   </Button>
-                  <Button onClick={handleCloseAddWorkout} color="secondary">
+                </form>
+              </Dialog>
+              <Dialog
+                open={openUpdateWorkout}
+                onClose={handleCloseUpdateWorkout}
+                aria-labelledby="update-workout-title"
+              >
+                <form className={classes.popup} onSubmit={handleUpdateWorkout}>
+                  <TextField
+                    autoFocus
+                    value={workoutname}
+                    onInput={ e=>setWorkoutName(e.target.value)}
+                    margin="dense"
+                    name="workoutname"
+                    id="workoutname"
+                    label="Workout Name"
+                    type="text"
+                    fullWidth
+                  />
+                  <p></p>
+                  <p>What days of the week will you do this workout?</p>
+                  <FormGroup row>
+                    <FormControlLabel control={<Checkbox checked={sunday} onChange={(event) => {setSunday(event.target.checked);}}/>} label="Sunday"/>
+                    <FormControlLabel control={<Checkbox checked={monday} onChange={(event) => {setMonday(event.target.checked);}}/>} label="Monday"/>
+                    <FormControlLabel control={<Checkbox checked={tuesday} onChange={(event) => {setTuesday(event.target.checked);}}/>} label="Tuesday"/>
+                    <FormControlLabel control={<Checkbox checked={wednesday} onChange={(event) => {setWednesday(event.target.checked);}}/>} label="Wednesday"/>
+                    <FormControlLabel control={<Checkbox checked={thursday} onChange={(event) => {setThursday(event.target.checked);}}/>} label="Thursday"/>
+                    <FormControlLabel control={<Checkbox checked={friday} onChange={(event) => {setFriday(event.target.checked);}}/>} label="Friday"/>
+                    <FormControlLabel control={<Checkbox checked={saturday} onChange={(event) => {setSaturday(event.target.checked);}}/>} label="Saturday"/>
+                  </FormGroup>
+                  <FormGroup row>
+                    <FormControl className={classes.formControl}>
+                      <InputLabel id="select-exercises-chip-label">Exercises</InputLabel>
+                      <Select
+                        labelId="select-exercises-chip-label"
+                        id="select-exercises-chip"
+                        multiple
+                        value={exerciseList}
+                        onChange={handleChangeExerciseList}
+                        input={<Input id="select-exercises-chip" />}
+                        required={true}
+                        renderValue={(selected) => (
+                          <div className={classes.chips}>
+                            {selected.map((value) => (
+                              <Chip key={value} label={findExercise(value).name} className={classes.chip} />
+                            ))}
+                          </div>
+                        )}
+                        MenuProps={MenuProps}
+                      >
+                        {weightExercises.map((exercise) => (
+                          <MenuItem key={exercise.id} value={exercise.id}>
+                            {exercise.name}
+                          </MenuItem>
+                        ))}
+                        {runExercises.map((exercise) => (
+                          <MenuItem key={exercise.id} value={exercise.id}>
+                            {exercise.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </FormGroup>
+                  <Button onClick={handleCloseUpdateWorkout} color="secondary">
                     Cancel
+                  </Button>
+                  <Button type="submit" color="primary">
+                    Edit
                   </Button>
                 </form>
               </Dialog>
@@ -736,11 +842,11 @@ export default function Workouts() {
                       required={true}
                       fullWidth
                     />
-                    <Button type="submit" color="primary">
-                      Add
-                    </Button>
                     <Button onClick={handleClose} color="secondary">
                       Cancel
+                    </Button>
+                    <Button type="submit" color="primary">
+                      Add
                     </Button>
                   </form>
                 </TabPanel>
@@ -770,11 +876,11 @@ export default function Workouts() {
                       required={true}
                       fullWidth
                     />
-                    <Button type="submit" color="primary">
-                      Add
-                    </Button>
                     <Button onClick={handleClose} color="secondary">
                       Cancel
+                    </Button>
+                    <Button type="submit" color="primary">
+                      Add
                     </Button>
                   </form>
                 </TabPanel>
