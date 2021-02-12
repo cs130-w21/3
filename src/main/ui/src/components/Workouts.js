@@ -1,5 +1,5 @@
 import React from "react";
-import { getWeightExercises, getRunExercises, createExercise, deleteExercise /*, updateExercise*/} from '../services/ExerciseServices';
+import { getWeightExercises, getRunExercises, createExercise, deleteExercise, updateExercise} from '../services/ExerciseServices';
 import { getWorkouts as getAPIWorkouts, createWorkout, deleteWorkout /*, updateWorkout*/} from '../services/WorkoutServices';
 import { makeStyles } from "@material-ui/core/styles";
 import Table from '@material-ui/core/Table';
@@ -183,7 +183,7 @@ export default function Workouts() {
           .then(response => {
               setWorkouts(response);
       });
-  }
+    }
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -307,6 +307,11 @@ export default function Workouts() {
       setDeleteId(exercise_id);
     }
 
+    function setWorkoutDeleteState(workout_id) {
+      setWorkoutDeletePopup(true);
+      setWorkoutDeleteId(workout_id);
+    }
+
     const handleCloseUpdatePopup = () => {
       setUpdateRunPopup(false);
       setUpdateWeightPopup(false);
@@ -374,17 +379,13 @@ export default function Workouts() {
       setReps(exerciseEdit.reps);
       setWeight(exerciseEdit.lbs);
       setSets(exerciseEdit.sets);
-    function setWorkoutDeleteState(workout_id) {
-      setWorkoutDeletePopup(true);
-      setWorkoutDeleteId(workout_id);
     }
 
     // Test data due to issues with my local build
     // If your .jar build doesn't connect to DDB, feel free to use following
     // test data - simply replace weightExercises in table with weightExerciseTestData
     // and same with runExercise
-
-/*
+    /*
     const weightExerciseTestData = [{"id":"2d7dba988-e445-4f62-9bb6-2890a6b304bb","userEmail":"test@gmail.com","name":"Test Arms","lbs":20,"sets":6,"reps":10,"workoutType":"Weights"},
       {"id":"1d7dba988-e445-4f62-9bb6-2890a6b304bb","userEmail":"test@gmail.com","name":"Test Arms2","lbs":20,"sets":6,"reps":10,"workoutType":"Weights"},
     {"id":"3d7dba988-e445-4f62-9bb6-2890a6b304bb","userEmail":"test@gmail.com","name":"Test Arms3","lbs":20,"sets":6,"reps":10,"workoutType":"Weights"}];
@@ -401,7 +402,7 @@ export default function Workouts() {
         createWorkoutTestData('Shoulders', ['Military Press', 'Ys and Ts'], 'W'),
         createWorkoutTestData('Abs', ['Circuit'], 'M, T, W, Th, F'),
     ];
-*/
+    */
 
     return (
         <div className="app">
@@ -473,26 +474,26 @@ export default function Workouts() {
             </DialogActions>
           </Dialog>
           <Dialog
-              open={workoutDeletePopup}
-              onClose={handleCloseDeletePopup}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">{"Are you sure you want to delete this workout?"}</DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  This will permenantly delete this workout from your profile.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCloseDeletePopup} color="primary">
-                  Cancel
-                </Button>
-                <Button onClick={handleDeleteWorkout} color="primary" autoFocus>
-                  Delete
-                </Button>
-              </DialogActions>
-            </Dialog>
+            open={workoutDeletePopup}
+            onClose={handleCloseDeletePopup}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Are you sure you want to delete this workout?"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                This will permenantly delete this workout from your profile.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDeletePopup} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handleDeleteWorkout} color="primary" autoFocus>
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
           <Dialog
             open={updateRunPopup}
             onClose={handleCloseUpdatePopup}
@@ -590,6 +591,7 @@ export default function Workouts() {
                   Edit
                 </Button>
         </form>
+          </Dialog>
             {populateExercises()}
             <h2>Lifting</h2>
             <div className={classes.root}>
