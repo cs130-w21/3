@@ -694,11 +694,11 @@ export default function Workouts() {
                       </Select>
                     </FormControl>
                   </FormGroup>
-                  <Button type="submit" color="primary">
-                    Add
-                  </Button>
                   <Button onClick={handleCloseAddWorkout} color="secondary">
                     Cancel
+                  </Button>
+                  <Button type="submit" color="primary">
+                    Add
                   </Button>
                 </form>
               </Dialog>
@@ -763,11 +763,11 @@ export default function Workouts() {
                       </Select>
                     </FormControl>
                   </FormGroup>
-                  <Button type="submit" color="primary">
-                    Edit
-                  </Button>
                   <Button onClick={handleCloseUpdateWorkout} color="secondary">
                     Cancel
+                  </Button>
+                  <Button type="submit" color="primary">
+                    Edit
                   </Button>
                 </form>
               </Dialog>
@@ -842,11 +842,11 @@ export default function Workouts() {
                       required={true}
                       fullWidth
                     />
-                    <Button type="submit" color="primary">
-                      Add
-                    </Button>
                     <Button onClick={handleClose} color="secondary">
                       Cancel
+                    </Button>
+                    <Button type="submit" color="primary">
+                      Add
                     </Button>
                   </form>
                 </TabPanel>
@@ -876,11 +876,11 @@ export default function Workouts() {
                       required={true}
                       fullWidth
                     />
-                    <Button type="submit" color="primary">
-                      Add
-                    </Button>
                     <Button onClick={handleClose} color="secondary">
                       Cancel
+                    </Button>
+                    <Button type="submit" color="primary">
+                      Add
                     </Button>
                   </form>
                 </TabPanel>
