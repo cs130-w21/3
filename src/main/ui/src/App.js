@@ -35,7 +35,7 @@ class App extends Component {
 
 
     if (token) {
-      if(hash(account) == token)
+      if(hash(account) === token)
       {
         this.setState({email: JSON.parse(account).email});
       }
@@ -43,23 +43,27 @@ class App extends Component {
   }
 
   isEmailLoggedIn = (pageName) => {
-    if(this.state.email != undefined && this.state.email != null && this.state.email != "")
+    if(this.state.email !== undefined && this.state.email !== null && this.state.email !== "")
     {
       if(pageName === "/")
       {
-        return <Workouts email={this.state.email}/> 
+        return <div> <Workouts email={this.state.email}/> 
+        <Footer/> </div>
       }
       if(pageName === "workouts")
       {
-        return <Workouts email={this.state.email}/>
+        return <div> <Workouts email={this.state.email}/>
+        <Footer/> </div>
       }
       else if(pageName === "friends")
       {
-        return <Friends email={this.state.email}/>
+        return <div> <Friends email={this.state.email}/>
+        <Footer/> </div>
       }
       else if(pageName === "profile")
       {
-        return <Profile email={this.state.email}/>
+        return <div> <Profile email={this.state.email}/>
+        <Footer/> </div>
       }
       else
       {
@@ -78,17 +82,17 @@ class App extends Component {
 
   handleSignUpSubmit = async (e, username, email, password) => {
     e.preventDefault();
-    if(email != "")
+    if(email !== "")
     {
-      if(username != "")
+      if(username !== "")
       {
-        if(password != "")
+        if(password !== "")
         {
           var params = {username: username.trim(), email: email.toLowerCase().trim(), password: password}
           var endpoint = "/api/account?"
           var url = new URLSearchParams(params);
   
-          const response = await fetch(endpoint + url, {
+          await fetch(endpoint + url, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
           }).then(async response => {
@@ -133,7 +137,7 @@ class App extends Component {
     var endpoint = "/api/login?"
     var url = new URLSearchParams(params);
   
-    const response = await fetch(endpoint + url, {
+    await fetch(endpoint + url, {
         method: 'GET',
         headers: {'Content-Type': 'application/json'},
       }).then(async response => {
@@ -189,15 +193,12 @@ class App extends Component {
           </Route>
           <Route path="/workouts">
             {this.isEmailLoggedIn("workouts")}
-            <Footer/>
           </Route>
           <Route path="/friends">
             {this.isEmailLoggedIn("friends")}
-            <Footer/>
           </Route>
           <Route path="/profile">
             {this.isEmailLoggedIn("profile")}
-            <Footer/>
           </Route>
           <Route component={Error} />
           

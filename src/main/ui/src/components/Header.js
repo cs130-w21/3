@@ -10,7 +10,7 @@ import transparent from '../transparent.png'
 import { useLocation } from 'react-router-dom'
 
 const signInOrOut = (route, email, signin, signout) => {
-    if(route === "/workouts" || route === "/friends" || route === "/profile" || (route == "/" && email !== "" && email !== null && email !== undefined))
+    if((route === "/workouts" || route === "/friends" || route === "/profile" || route === "/") && (email !== "" && email !== null && email !== undefined))
     {
         return <Button variant="outlined" size="small" onClick={signout}>
           Sign out
@@ -24,7 +24,7 @@ const signInOrOut = (route, email, signin, signout) => {
     }
 }
 const secondToolbar = (classes, sections, route, email) =>  { //This should be changed to "if logged in, see this toolbar"
-    if (route === "/workouts" || route === "/friends" || route === "/profile" || (route == "/" && email !== "" && email !== null && email !== undefined)) {
+    if ((route === "/workouts" || route === "/friends" || route === "/profile" || route === "/") && (email !== "" && email !== null && email !== undefined)) {
       return <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
       {sections.map((section) => (
         <Link
