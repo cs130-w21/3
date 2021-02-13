@@ -41,8 +41,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function SignIn(props) {
   const classes = useStyles();
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    props.resetError()
+  };
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    props.resetError()
+  };
+
+  const submitInfo = (e) => {
+    props.onSubmit(e, email, password);
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -51,7 +66,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={submitInfo}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -62,6 +77,7 @@ export default function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={handleEmailChange}
           />
           <TextField
             variant="outlined"
@@ -73,13 +89,13 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={handlePasswordChange}
           />
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
-            href="/workouts"
             className={classes.submit}
           >
             Sign In
