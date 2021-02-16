@@ -10,6 +10,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * The class used as the REST controller for exercises (both types).
+ * The DAO objects are autowired in as singletons to
+ * ensure the proper credentials are used each time an API is
+ * called.
+ *
+ * For more information on the specific API calls, see the WeightExerciseDao
+ * and RunExerciseDao classes. This class mainly serves as the HTTP API
+ * gateway and logger.
+ *
+ * @author Mark Farber
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/")
