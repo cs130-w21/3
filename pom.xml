@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -17,6 +17,14 @@
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>dynamodblocal</id>
+			<name>AWS DynamoDB Local Release Repository</name>
+			<url>https://s3-us-west-2.amazonaws.com/dynamodb-local/release</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -99,6 +107,24 @@
 			<artifactId>jasypt</artifactId>
 			<version>1.9.2</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.amazonaws/DynamoDBLocal -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>DynamoDBLocal</artifactId>
+			<version>1.11.86</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -106,6 +132,11 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.0</version>
 			</plugin>
 			<plugin>
 				<groupId>com.mysema.maven</groupId>
@@ -124,42 +155,42 @@
 				</executions>
 			</plugin>
 			<plugin>
-			  <groupId>com.github.eirslett</groupId>
-			  <artifactId>frontend-maven-plugin</artifactId>
-			  <version>1.7.6</version>
-			  <configuration>
-        		<installDirectory>root</installDirectory>
-        		<workingDirectory>src/main/ui</workingDirectory>
-    		  </configuration>
-			  <executions>
-			      <execution>
-			          <id>install node and npm</id>
-			          <goals>
-			              <goal>install-node-and-npm</goal>
-			          </goals>
-			          <configuration>
-			              <nodeVersion>v10.15.3</nodeVersion>
-			              <npmVersion>6.9.0</npmVersion>
-			          </configuration>
-			      </execution>
-			      <execution>
-			          <id>npm install</id>
-			          <goals>
-			              <goal>npm</goal>
-			          </goals>
-			      </execution>
-			      <execution>
-			          <id>prod build</id>
-			          <goals>
-			              <goal>npm</goal>
-			          </goals>
-			          <phase>generate-resources</phase>
-			          <configuration>
-			              <arguments>run build</arguments>
-			              <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
-			          </configuration>
-			      </execution>
-			  </executions>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>1.7.6</version>
+				<configuration>
+					<installDirectory>root</installDirectory>
+					<workingDirectory>src/main/ui</workingDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>install node and npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<configuration>
+							<nodeVersion>v10.15.3</nodeVersion>
+							<npmVersion>6.9.0</npmVersion>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>prod build</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<arguments>run build</arguments>
+							<npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -216,6 +247,25 @@
 						</goals>
 						<configuration>
 							<executable>gulp</executable>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<includeScope>test</includeScope>
+							<includeTypes>so,dll,dylib</includeTypes>
+							<outputDirectory>${project.basedir}/native-libs</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>

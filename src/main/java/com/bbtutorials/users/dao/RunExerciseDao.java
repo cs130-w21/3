@@ -23,6 +23,14 @@ public class RunExerciseDao {
         this.mapper = mapper;
     }
 
+    /**
+     * Returns a list of run exercises contained by the user
+     * corresponding to their email address, which must be in
+     * the form of [ALIAS]@[SERVER].[EXTENSION]. When the user has
+     * no weight exercises, an empty list is returned.
+     * @param userEmail the user's email address
+     * @return list of run exercises
+     */
     public List<ExerciseRun> getRunExercises(String userEmail) {
         Map<String, AttributeValue> eav = new HashMap<>();
         eav.put(":val1", new AttributeValue().withS(userEmail));
