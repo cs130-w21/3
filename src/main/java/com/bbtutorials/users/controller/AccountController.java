@@ -9,6 +9,17 @@ import org.springframework.web.bind.annotation.*;
 import javax.security.auth.login.AccountException;
 import javax.security.auth.login.FailedLoginException;
 
+/**
+ * The class used as the REST controller for accounts (and friends).
+ * The AccountDao object is autowired in as a singleton to
+ * ensure the proper credentials are used each time an API is
+ * called.
+ *
+ * For more information on the specific API calls, see the AccountDao
+ * class. This class mainly serves as the HTTP API gateway and logger.
+ *
+ * @author Mark Farber
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/")

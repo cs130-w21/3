@@ -15,6 +15,14 @@ import javax.security.auth.login.FailedLoginException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The class used to interact with DynamoDB for accounts (and friends).
+ * The DynamoDBMapper object is autowired in as a singleton to
+ * ensure the proper credentials are used each time an API is
+ * called.
+ *
+ * @author Mark Farber
+ */
 @Slf4j
 @Component
 public class AccountDao {
@@ -27,6 +35,20 @@ public class AccountDao {
         this.mapper = mapper;
     }
 
+    /**
+     * Creates an account for a new user by taking in their username,
+     * email, and password. The password is encrypted and then updated in
+     * the account created that will be saved to DynamoDB. When creation
+     * is successful, the newly created account is returned to make an
+     * authentication key later on. When unsuccessful, an exception is thrown
+     * to depict failure of the operation. Accounts initially start out with
+     * no friends.
+     * @param username the username for the new user
+     * @param email the email address for the new user
+     * @param password the plaintext password for the new user
+     * @return the created account for the new user
+     * @throws AccountException when the supplied user information is invalid
+     */
     public Account createAccount(String username, String email, String password) throws AccountException {
         StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
         String encrypted = encryptor.encryptPassword(password);
@@ -51,6 +73,17 @@ public class AccountDao {
         }
     }
 
+    /**
+     * Returns the account for the user specified by the email argument
+     * when the login is successful, wherein the decrypted password from
+     * DynamoDB matches the plaintext one specified by the password argument.
+     * When unsuccessful, due to either an invalid email or password supplied,
+     * an exception is thrown to depict failure of the operation.
+     * @param email the email address of the user logging in
+     * @param password the plaintext password of the user logging in
+     * @return the account for the logged in user
+     * @throws FailedLoginException when the email or password supplied is invalid
+     */
     public Account login(String email, String password) throws FailedLoginException {
         StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
 

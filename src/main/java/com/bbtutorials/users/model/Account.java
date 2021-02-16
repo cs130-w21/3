@@ -8,6 +8,16 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
+/**
+ * The class used as the model for accounts in DynamoDB.
+ * The email attribute serves as the primary key for indexing
+ * the database table.
+ *
+ * The friends attribute is the set of account emails corresponding
+ * to the friends of the current user.
+ *
+ * @author Mark Farber
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamoDBTable(tableName = "Accounts")
