@@ -110,7 +110,7 @@ const MenuProps = {
   },
 };
 
-export default function Workouts() {
+export default function Workouts(props) {
     const [weightExercises, setWeightExercises] = React.useState([]);
     const [workouts, setWorkouts] = React.useState([]);
     const [runExercises, setRunExercises] = React.useState([]);
@@ -149,19 +149,9 @@ export default function Workouts() {
     const populateExercises = () => {
         if(populate === true)
         {
-          //These are just examples of how to create event, remove them from this function
-          //createWorkout({userEmail: "test@gmail.com", exercises: ["exerciseID1", "exerciseID2"], name: "Test Workout", daysOfWeek: [-1]}).then( () => {getWorkouts("test@gmail.com")})
-          //deleteWorkout({id: "b9545696-9587-4907-86c9-80402914d23b", userEmail: "test@gmail.com", name: "Test Workout", exercises: ["exerciseID1", "exerciseID2"], daysOfWeek: [-1]}).then( () => {getWorkouts("test@gmail.com")})
-          //updateWorkout({id: "49627d29-06fd-4b80-b9cd-d0a46d799c01", userEmail: "test@gmail.com", name: "Test Workout", exercises: ["exerciseID1","exerciseID2", "exerciseID3"], daysOfWeek: [-1]}).then( () => {getWorkouts("test@gmail.com")})
-          //createExercise({userEmail: "test@gmail.com", workoutType: "Run", name: "Test", miles: 3.12}).then( () => {getRuns("test@gmail.com")})
-          //createExercise({userEmail: "test@gmail.com", workoutType: "Weight", name: "Test", sets: 4, reps: 12, lbs: 40}).then( () => {getWeights("test@gmail.com")})
-          //updateExercise({id: "9751f315-4e8e-414e-945d-023cd21925ba", userEmail: "test@gmail.com", name: "Test Night Run", miles: 10.0, workoutType: "Run"}).then( () => {getRuns("test@gmail.com")})
-          //updateExercise({id: "ec5d2895-f639-432b-a9c4-866b43c443f5", userEmail: "test@gmail.com", name: "Test", lbs: 100, sets: 4, reps: 12, workoutType: "Weight"}).then( () => {getWeights("test@gmail.com")})
-          //deleteExercise({id: "9751f315-4e8e-414e-945d-023cd21925ba", userEmail: "test@gmail.com", name: "Test Night Run", miles: 1.33, workoutType: "Run"}).then( () => {getRuns("test@gmail.com")})
-          //deleteExercise({id: "ec5d2895-f639-432b-a9c4-866b43c443f5", userEmail: "test@gmail.com", name: "Test", lbs: 40, sets: 4, reps: 12, workoutType: "Weight"}).then( () => {getWeights("test@gmail.com")})
-          getWorkouts("test@gmail.com")
-          getWeights("test@gmail.com");
-          getRuns("test@gmail.com");
+          getWorkouts(props.email)
+          getWeights(props.email);
+          getRuns(props.email);
           setPopulate(false);
         }
       }
@@ -226,30 +216,30 @@ export default function Workouts() {
     const handleAddRun = () => {
       setOpen(false);
       var jsonobj = {
-        "userEmail":"test@gmail.com",
-        "name":runname,
-        "miles":miles,
-        "exerciseType":"Run",
+        "userEmail": props.email,
+        "name": runname,
+        "miles": miles,
+        "exerciseType": "Run",
       }
       createExercise(jsonobj)
           .then(response => {
-              getRuns("test@gmail.com")
+              getRuns(props.email)
       });
     };
 
     const handleAddWeights = () => {
       setOpen(false);
       var jsonobj = {
-        "userEmail":"test@gmail.com",
-        "name":weightname,
-        "sets":sets,
-        "reps":reps,
-        "lbs":weight,
-        "exerciseType":"Weight",
+        "userEmail": props.email,
+        "name": weightname,
+        "sets": sets,
+        "reps": reps,
+        "lbs": weight,
+        "exerciseType": "Weight",
       }
       createExercise(jsonobj)
           .then(response => {
-              getWeights("test@gmail.com")
+              getWeights(props.email)
       });
     };
 
@@ -266,7 +256,7 @@ export default function Workouts() {
       if (thursday) { daysOfWeek.push(4); }
       if (friday) { daysOfWeek.push(5); }
       if (saturday) { daysOfWeek.push(6); }
-      createWorkout({userEmail:"test@gmail.com", exercises: exerciseList, name: workoutname, daysOfWeek: daysOfWeek}).then( () => {getWorkouts("test@gmail.com")})
+      createWorkout({userEmail: props.email, exercises: exerciseList, name: workoutname, daysOfWeek: daysOfWeek}).then( () => {getWorkouts(props.email)})
     };
 
     function findExercise(value) {
@@ -290,8 +280,8 @@ export default function Workouts() {
       var exerciseToDelete = allexercises.find( ({ id }) => id === deleteId );
       console.log(exerciseToDelete);
       deleteExercise(exerciseToDelete).then( () => {
-        getWeights("test@gmail.com");
-        getRuns("test@gmail.com");
+        getWeights(props.email);
+        getRuns(props.email);
       })
     };
 
@@ -300,7 +290,7 @@ export default function Workouts() {
       var workoutToDelete = workouts.find( ({ id }) => id === workoutDeleteId );
       console.log(workoutToDelete);
       deleteWorkout(workoutToDelete).then( () => {
-        getWorkouts("test@gmail.com")
+        getWorkouts(props.email)
       })
     };
 
@@ -334,13 +324,13 @@ export default function Workouts() {
       if(exerciseToUpdate.exerciseType === "Run"){
         var runobj = {
         "id":updateId,
-        "userEmail":"test@gmail.com",
+        "userEmail":props.email,
         "name":runname,
         "miles":miles,
         "exerciseType":"Run"
          }
          updateExercise(runobj).then(response => {
-               getRuns("test@gmail.com")
+               getRuns(props.email)
          });
          setRunName("");
          setMiles(0);
@@ -348,7 +338,7 @@ export default function Workouts() {
       if(exerciseToUpdate.exerciseType === "Weight"){
         var weightobj = {
         "id":updateId,
-        "userEmail":"test@gmail.com",
+        "userEmail":props.email,
         "name":weightname,
         "lbs":weight,
         "sets":sets,
@@ -356,7 +346,7 @@ export default function Workouts() {
         "exerciseType":"Weight"
          }
       updateExercise(weightobj).then(response => {
-          getWeights("test@gmail.com")
+          getWeights(props.email)
       });
         setWeightName("");
         setReps(0);
@@ -407,7 +397,7 @@ export default function Workouts() {
       if (thursday) { daysOfWeek.push(4); }
       if (friday) { daysOfWeek.push(5); }
       if (saturday) { daysOfWeek.push(6); }
-      updateWorkout({id:updateWorkoutId, userEmail:"test@gmail.com", exercises:exerciseList, name:workoutname, daysOfWeek:daysOfWeek}).then( () => {getWorkouts("test@gmail.com")});
+      updateWorkout({id:updateWorkoutId, userEmail: props.email, exercises:exerciseList, name:workoutname, daysOfWeek:daysOfWeek}).then( () => {getWorkouts(props.email)});
       handleCloseAddWorkout();
       setUpdateWorkoutId("");
     };
@@ -418,29 +408,6 @@ export default function Workouts() {
       setUpdateWorkoutId("");
     };
 
-    // Test data due to issues with my local build
-    // If your .jar build doesn't connect to DDB, feel free to use following
-    // test data - simply replace weightExercises in table with weightExerciseTestData
-    // and same with runExercise
-    /*
-    const weightExerciseTestData = [{"id":"2d7dba988-e445-4f62-9bb6-2890a6b304bb","userEmail":"test@gmail.com","name":"Test Arms","lbs":20,"sets":6,"reps":10,"workoutType":"Weights"},
-      {"id":"1d7dba988-e445-4f62-9bb6-2890a6b304bb","userEmail":"test@gmail.com","name":"Test Arms2","lbs":20,"sets":6,"reps":10,"workoutType":"Weights"},
-    {"id":"3d7dba988-e445-4f62-9bb6-2890a6b304bb","userEmail":"test@gmail.com","name":"Test Arms3","lbs":20,"sets":6,"reps":10,"workoutType":"Weights"}];
-    const runExerciseTestData = [{"id":"abc","userEmail":"test@gmail.com","name":"Test","miles":2.5,"workoutType":"Run"}];
-    function createWorkoutTestData(workout, exercises, d_o_w) {
-        return { workout, exercises, d_o_w };
-    }
-    const workoutTestData = [
-        createWorkoutTestData('Chest', ['Bench Press', 'Incline Dumbbell Press'], 'M, F'),
-        createWorkoutTestData('Tris', ['Dips', 'Cable Pull'], 'M, F'),
-        createWorkoutTestData('Legs', ['Squats', 'Lunges', 'RDLs'], 'Tu, Sa'),
-        createWorkoutTestData('Back', ['Pull-Ups', 'Cable Rows', 'Bent-Over Rows'], 'Th, Su'),
-        createWorkoutTestData('Bis', ['Dumbbell Curls', 'Curly-Bar Curls'], 'Th, Su'),
-        createWorkoutTestData('Shoulders', ['Military Press', 'Ys and Ts'], 'W'),
-        createWorkoutTestData('Abs', ['Circuit'], 'M, T, W, Th, F'),
-    ];
-    */
-
     return (
         <div className="app">
           <h1>Workouts {' '}
@@ -448,7 +415,7 @@ export default function Workouts() {
               Add Workout
             </Button>
           </h1>
-            <Calendar workouts={workouts} removeEventFromCal={deleteDayFromWorkout} email={"test@gmail.com"}/>
+            <Calendar workouts={workouts} removeEventFromCal={deleteDayFromWorkout} email={props.email}/>
             <div className="tables">
             <TableContainer component={Paper}>
                 <Table aria-label="workout table">

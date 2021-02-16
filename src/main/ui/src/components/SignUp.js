@@ -41,8 +41,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function SignUp(props) {
   const classes = useStyles();
+
+  const [username, setUsername] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+    props.resetError()
+  };
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    props.resetError()
+  };
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    props.resetError()
+  };
+
+  const submitInfo = (e) => {
+    props.onSubmit(e, username, email, password);
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -51,7 +72,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={submitInfo}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -62,6 +83,7 @@ export default function SignUp() {
                   label="Username"
                   name="username"
                   autoComplete="username"
+                  onChange={handleUsernameChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -73,6 +95,7 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={handleEmailChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -85,6 +108,7 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={handlePasswordChange}
               />
             </Grid>
           </Grid>
@@ -93,7 +117,6 @@ export default function SignUp() {
             fullWidth
             variant="contained"
             color="primary"
-            href="/workouts"
             className={classes.submit}
           >
             Sign Up

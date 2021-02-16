@@ -9,22 +9,22 @@ import logo from '../logo.png';
 import transparent from '../transparent.png'
 import { useLocation } from 'react-router-dom'
 
-const signInOrOut = (route) => {
-    if(route === "/workouts" || route === "/friends" || route === "/profile")
+const signInOrOut = (route, email, signin, signout) => {
+    if((route === "/workouts" || route === "/friends" || route === "/profile" || route === "/") && (email !== "" && email !== null && email !== undefined))
     {
-        return <Button variant="outlined" href="signin" size="small">
+        return <Button variant="outlined" size="small" onClick={signout}>
           Sign out
         </Button>
     }
     else
     {
-        return <Button variant="outlined" size="small">
+        return <Button variant="outlined" size="small" onClick={signin}>
           Sign in
         </Button>
     }
 }
-const secondToolbar = (classes, sections, route) =>  { //This should be changed to "if logged in, see this toolbar"
-    if (route === "/workouts" || route === "/friends" || route === "/profile") {
+const secondToolbar = (classes, sections, route, email) =>  { //This should be changed to "if logged in, see this toolbar"
+    if ((route === "/workouts" || route === "/friends" || route === "/profile" || route === "/") && (email !== "" && email !== null && email !== undefined)) {
       return <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
       {sections.map((section) => (
         <Link
@@ -81,9 +81,9 @@ export default function Header(props) {
         >
           {title}
         </Typography>
-        {signInOrOut(location.pathname)}
+        {signInOrOut(location.pathname, props.email, props.signin, props.signout)}
       </Toolbar>
-      {secondToolbar(classes, sections, location.pathname)}
+      {secondToolbar(classes, sections, location.pathname, props.email)}
     </React.Fragment>
   );
 }
