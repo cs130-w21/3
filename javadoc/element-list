@@ -1,0 +1,5 @@
+com.bbtutorials.users
+com.bbtutorials.users.controller
+com.bbtutorials.users.dao
+com.bbtutorials.users.ddbconfig
+com.bbtutorials.users.model

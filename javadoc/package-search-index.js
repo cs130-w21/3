@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.bbtutorials.users"},{"l":"com.bbtutorials.users.controller"},{"l":"com.bbtutorials.users.dao"},{"l":"com.bbtutorials.users.ddbconfig"},{"l":"com.bbtutorials.users.model"}]
