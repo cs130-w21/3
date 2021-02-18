@@ -37,6 +37,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import ExerciseModal from './ExerciseModal'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -264,12 +265,6 @@ export default function Workouts(props) {
       return allexercises.find( ({ id }) => id === value );
     }
 
-    function getExerciseName(value) {
-        let exercise = findExercise(value)
-        if (exercise) return exercise.name;
-        return "";
-    }
-
     const handleChangeExerciseList = (event) => {
       setExerciseList(event.target.value);
     };
@@ -441,9 +436,7 @@ export default function Workouts(props) {
                             {workout.name}
                         </TableCell>
                         <TableCell align="right">{workout.exercises.map((exerciseID) => (
-                            <div>
-                                {getExerciseName(exerciseID)}
-                            </div>
+                            <ExerciseModal exercise={findExercise(exerciseID)} />
                         ))}</TableCell>
                         </TableRow>
                     ))}
