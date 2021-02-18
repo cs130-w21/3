@@ -5,13 +5,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 
 function getPopoverInfo(exercise) {
-    if (exercise.exerciseType == 'Weight') {
+    if (exercise.exerciseType === 'Weight') {
         return (
             <Typography>{`Weight: ${exercise.lbs} | Sets: ${exercise.sets} | Reps: ${exercise.reps}`}</Typography>
         );
     }
 
-    if (exercise.exerciseType == 'Run') {
+    if (exercise.exerciseType === 'Run') {
         return (
             <Typography>{`Miles: ${exercise.miles}`}</Typography>
         );

@@ -265,12 +265,6 @@ export default function Workouts(props) {
       return allexercises.find( ({ id }) => id === value );
     }
 
-    function getExerciseName(value) {
-        let exercise = findExercise(value)
-        if (exercise) return exercise.name;
-        return "";
-    }
-
     const handleChangeExerciseList = (event) => {
       setExerciseList(event.target.value);
     };
