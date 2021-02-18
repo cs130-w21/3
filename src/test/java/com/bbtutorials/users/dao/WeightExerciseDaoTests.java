@@ -4,7 +4,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.local.embedded.DynamoDBEmbedded;
 import com.amazonaws.services.dynamodbv2.model.*;
-import com.bbtutorials.users.model.ExerciseRun;
+import com.bbtutorials.users.model.ExerciseWeight;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -13,15 +13,17 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class RunExerciseDaoTests {
+public class WeightExerciseDaoTests {
     private static AmazonDynamoDB amazonDynamoDB;
     private static DynamoDBMapper mapper;
-    private static RunExerciseDao dao;
+    private static WeightExerciseDao dao;
 
     private final String testEmail = "test@test.com";
-    private final String testName = "Test Run";
-    private final Double testMiles = 2.5;
-    private final String testType = "Run";
+    private final String testName = "Test Weight";
+    private final Integer testLbs = 20;
+    private final Integer testSets = 5;
+    private final Integer testReps = 10;
+    private final String testType = "Weight";
 
     @BeforeClass
     public static void setup() {
@@ -38,67 +40,71 @@ public class RunExerciseDaoTests {
                 .withProvisionedThroughput(new ProvisionedThroughput(5L, 5L))
         );
 
-        dao = new RunExerciseDao(mapper);
+        dao = new WeightExerciseDao(mapper);
     }
 
-    public ExerciseRun createTestRunExercise() {
-        ExerciseRun test = new ExerciseRun();
+    public ExerciseWeight createTestWeightExercise() {
+        ExerciseWeight test = new ExerciseWeight();
         test.setUserEmail(testEmail);
         test.setName(testName);
-        test.setMiles(testMiles);
+        test.setLbs(testLbs);
+        test.setSets(testSets);
+        test.setReps(testReps);
         test.setExerciseType(testType);
 
         return test;
     }
 
     @Test
-    public void testPutGetDeleteOneRunExercise() {
-        dao.putRunExercise(createTestRunExercise());
+    public void testPutGetDeleteOneWeightExercise() {
+        dao.putWeightExercise(createTestWeightExercise());
 
-        List<ExerciseRun> res = dao.getRunExercises(testEmail);
+        List<ExerciseWeight> res = dao.getWeightExercises(testEmail);
 
         assertEquals(1, res.size());
         assertEquals(testName, res.get(0).getName());
-        assertEquals(testMiles, res.get(0).getMiles());
+        assertEquals(testLbs, res.get(0).getLbs());
+        assertEquals(testSets, res.get(0).getSets());
+        assertEquals(testReps, res.get(0).getReps());
 
-        dao.removeRunExercise(res.get(0));
+        dao.removeWeightExercise(res.get(0));
 
-        res = dao.getRunExercises(testEmail);
+        res = dao.getWeightExercises(testEmail);
 
         assertTrue(res.isEmpty());
     }
 
     @Test
-    public void testGetMultipleRunExercise() {
-        dao.putRunExercise(createTestRunExercise());
-        ExerciseRun test1 = createTestRunExercise();
-        test1.setName("Test Run 2");
+    public void testGetMultipleWeightExercise() {
+        dao.putWeightExercise(createTestWeightExercise());
+        ExerciseWeight test1 = createTestWeightExercise();
+        test1.setName("Test Weight 2");
 
-        dao.putRunExercise(test1);
+        dao.putWeightExercise(test1);
 
-        List<ExerciseRun> res = dao.getRunExercises(testEmail);
+        List<ExerciseWeight> res = dao.getWeightExercises(testEmail);
 
         assertEquals(2, res.size());
 
-        for (ExerciseRun toRemove : res) {
-            dao.removeRunExercise(toRemove);
+        for (ExerciseWeight toRemove : res) {
+            dao.removeWeightExercise(toRemove);
         }
     }
 
     @Test
-    public void testUpdateRunExercise() {
-        dao.putRunExercise(createTestRunExercise());
+    public void testUpdateWeightExercise() {
+        dao.putWeightExercise(createTestWeightExercise());
 
-        List<ExerciseRun> res = dao.getRunExercises(testEmail);
+        List<ExerciseWeight> res = dao.getWeightExercises(testEmail);
 
-        ExerciseRun toUpdate = res.get(0);
-        toUpdate.setMiles(3.5);
+        ExerciseWeight toUpdate = res.get(0);
+        toUpdate.setReps(15);
 
-        dao.updateRunExercise(toUpdate);
+        dao.updateWeightExercise(toUpdate);
 
-        res = dao.getRunExercises(testEmail);
+        res = dao.getWeightExercises(testEmail);
 
-        assertEquals(3.5, res.get(0).getMiles(), 0);
+        assertEquals(15, res.get(0).getReps(),0);
     }
 
     @AfterClass
@@ -108,3 +114,4 @@ public class RunExerciseDaoTests {
         }
     }
 }
+
