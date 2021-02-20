@@ -41,4 +41,18 @@ public class AccountController {
         log.info("AccountController: login");
         return accountDao.login(email, password);
     }
+
+    @PostMapping(path = "/friend/add")
+    @ResponseBody
+    public void addFriend(@RequestParam String userEmail, @RequestParam String friendEmail) throws AccountException {
+        log.info("AccountController: add friend");
+        accountDao.addFriend(userEmail, friendEmail);
+    }
+
+    @PostMapping(path = "/friend/remove")
+    @ResponseBody
+    public void removeFriend(@RequestParam String userEmail, @RequestParam String friendEmail) {
+        log.info("AccountController: remove friend");
+        accountDao.removeFriend(userEmail, friendEmail);
+    }
 }

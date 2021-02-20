@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component;
 import javax.security.auth.login.AccountException;
 import javax.security.auth.login.FailedLoginException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The class used to interact with DynamoDB for accounts (and friends).
@@ -101,5 +103,65 @@ public class AccountDao {
             log.info("Incorrect password!");
             throw new FailedLoginException("Invalid email or password!");
         }
+    }
+
+    /**
+     * Adds a friend specified by the friendEmail argument to the current user's
+     * (specified by the userEmail argument) friends list by email address. When
+     * successful, nothing is returned and the list is updated in DynamoDB. When
+     * unsuccessful, due to the friend's email not pertaining to an existing account,
+     * an exception is thrown to depict failure of the operation.
+     * @param userEmail the email address of the current logged in user
+     * @param friendEmail the email address of the friend to add
+     * @throws AccountException when the friend's email does not pertain to an existing account
+     */
+    public void addFriend(String userEmail, String friendEmail) throws AccountException {
+        if (mapper.load(Account.class, friendEmail) == null) {
+            log.info("Friend with specified email does not exist.");
+            throw new AccountException("Invalid info supplied!");
+        }
+
+        Account res = mapper.load(Account.class, userEmail);
+
+        Set<String> friends = res.getFriends();
+        if (friends == null) {
+            Set<String> newFriends = new HashSet<>();
+            newFriends.add(friendEmail);
+
+            res.setFriends(newFriends);
+        } else {
+            if (friends.contains(friendEmail)) {
+                log.info("Friend already exists.");
+                return;
+            } else {
+                friends.add(friendEmail);
+                res.setFriends(friends);
+            }
+        }
+
+        mapper.save(res);
+    }
+
+    /**
+     * Removes a friend specified by the friendEmail argument from the current user's
+     * (specified by the userEmail argument) friends list by email address. Since this
+     * friend email is fetched directly from the DynamoDB list of friends, the friend is
+     * guaranteed to still be on the list before removal.
+     * @param userEmail the email address of the current logged in user
+     * @param friendEmail the email address of the friend to remove
+     */
+    public void removeFriend(String userEmail, String friendEmail) {
+        Account res = mapper.load(Account.class, userEmail);
+
+        Set<String> friends = res.getFriends();
+        friends.remove(friendEmail);
+
+        if (friends.isEmpty()) {
+            friends = null;
+        }
+
+        res.setFriends(friends);
+
+        mapper.save(res);
     }
 }
