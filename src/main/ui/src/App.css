@@ -35,6 +35,12 @@
   margin: auto;
 }
 
+.friends {
+  width: 80vw;
+  padding: 1%;
+  margin: auto;
+}
+
 .app {
   padding: 1%;
 }
