@@ -11,6 +11,26 @@ export async function getWorkouts(email) {
     return await response.json();
 }
 
+export async function getFriendsWorkouts(emails) {
+
+  var friendsWorkouts = {}
+  for(const currEmail of emails)
+  {
+    var params = {userEmail: currEmail}
+    var endpoint = "/api/workouts?"
+    var url = new URLSearchParams(params);
+
+    const response = await fetch(endpoint + url, {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'}
+      })
+    var workouts = await response.json();
+    friendsWorkouts[currEmail] = workouts
+  }
+  
+  return friendsWorkouts;
+}
+
 export async function createWorkout(workout) {
     var endpoint = "/api/workout/create";
     
