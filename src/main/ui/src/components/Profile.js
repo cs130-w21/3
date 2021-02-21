@@ -78,6 +78,7 @@ export default function Profile() {
 
 	const handleRemoveFriend = () => {
 		/*removeFriend(email:removeFriend).then(response => {getFriends(email)});*/
+		console.log(removeFriend)
 		setRemovePopup(false);
     	setRemoveFriend("");
 	};
