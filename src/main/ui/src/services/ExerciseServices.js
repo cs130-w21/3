@@ -38,9 +38,9 @@ export async function getFriendsExercises(emails) {
           })
         var currRuns = await response.json();
 
-        var params = {userEmail: currEmail}
-        var endpoint = "/api/weights?"
-        var url = new URLSearchParams(params);
+        params = {userEmail: currEmail}
+        endpoint = "/api/weights?"
+        url = new URLSearchParams(params);
 
         const response2 = await fetch(endpoint + url, {
             method: 'GET',
@@ -69,7 +69,7 @@ export async function createExercise(exercise) { //Call this function with a jso
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(exercise)
       })
-    return await response;
+    return response;
 }
 
 

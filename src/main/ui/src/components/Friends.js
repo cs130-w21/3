@@ -140,23 +140,20 @@ export default function Friends() {
     const handleSaveWorkout = () => {
         for(const friend of friends)
         {
-                friendWorkouts[friend].map((workout) => {
-                    if(workout.id == workoutSaveId)
+                friendWorkouts[friend].forEach((workout) => {
+                    if(workout.id === workoutSaveId)
                     {
                         var listOfExercises = []
-                        console.log(JSON.stringify(workout))
-                        workout.exercises.map((exerciseID) => {
-                            console.log(exerciseID)
-                            friendExercises[friend].map((exercise) => {
-                                if(exercise.id == exerciseID)
+                        workout.exercises.forEach((exerciseID) => {
+                            friendExercises[friend].forEach((exercise) => {
+                                if(exercise.id === exerciseID)
                                 {
-                                    console.log("found exerciseID")
-                                    if(exercise.exerciseType == "Run")
+                                    var jsonobj;
+                                    var hashed = hash(exercise.id)
+                                    listOfExercises.push(hashed)
+                                    if(exercise.exerciseType === "Run")
                                     {
-                                        var hashed = hash(exercise.id)
-                                        console.log(hashed)
-                                        listOfExercises.push(hashed)
-                                        var jsonobj = {
+                                        jsonobj = {
                                             "id": hashed,
                                             "userEmail": email,
                                             "name": exercise.name,
@@ -164,14 +161,10 @@ export default function Friends() {
                                             "exerciseType": "Run",
                                           }
                                         createExercise(jsonobj)
-                                        console.log("Created Exercise")
                                     }
                                     else
                                     {
-                                        var hashed = hash(exercise.id)
-                                        console.log(hashed)
-                                        listOfExercises.push(hashed)
-                                        var jsonobj = {
+                                        jsonobj = {
                                             "id": hashed,
                                             "userEmail": email,
                                             "name": exercise.name,
@@ -181,13 +174,11 @@ export default function Friends() {
                                             "exerciseType": "Weight",
                                           }
                                         createExercise(jsonobj)
-                                        console.log("Created Exercise")
                                     }
                                 }
                             })
                         })
                         createWorkout({userEmail: email, exercises: listOfExercises, name: workout.name, daysOfWeek: workout.daysOfWeek})
-                        console.log("created exercise")
                     }
                 })
         }
