@@ -15,7 +15,7 @@ import {
   Route
 } from "react-router-dom"
 import Alert from '@material-ui/lab/Alert';
-var hash = require('object-hash');
+var hash = require('string-hash');
 
 const sections = [
   { title: 'Workouts', url: '/workouts' },
@@ -31,11 +31,12 @@ class App extends Component {
 
   componentDidMount() {
     const account = localStorage.getItem("account");
+    var accountJSON = JSON.parse(account)
     const token = localStorage.getItem("token");
 
 
     if (token) {
-      if(hash(account) === token)
+      if(hash(accountJSON.password).toString() === token)
       {
         this.setState({email: JSON.parse(account).email});
       }
@@ -106,7 +107,7 @@ class App extends Component {
       
               // store the data in localStorage
               localStorage.setItem('account', JSON.stringify(data))
-              localStorage.setItem('token',  hash(JSON.stringify(data)))
+              localStorage.setItem('token',  hash(data.password))
       
               window.location = '/workouts'
             }
@@ -147,13 +148,11 @@ class App extends Component {
           this.setState({errorMessage: err.message})
         } else {
           const data = await response.json()
-          this.setState({email: data.email});
-  
           // store the data in localStorage
           localStorage.setItem('account', JSON.stringify(data))
-          localStorage.setItem('token',  hash(JSON.stringify(data)))
-  
-          window.location = '/workouts'
+          localStorage.setItem('token',  hash(data.password))
+          
+          this.setState({email: data.email});
         }
         
       })

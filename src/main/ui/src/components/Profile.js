@@ -16,6 +16,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from "@material-ui/core/styles";
+import Alert from '@material-ui/lab/Alert';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +40,7 @@ export default function Profile() {
 	const [addFriend, setAddFriend] = React.useState("");
 	const [removePopup, setRemovePopup] = React.useState(false);
 	const [removeFriend, setRemoveFriend] = React.useState("");
+	const [errorMessage, setErrorMessage] = React.useState("");
 	const classes = useStyles();
 
 
@@ -55,11 +57,33 @@ export default function Profile() {
 		setAddPopup(true);
 	};
 
-	const handleAddFriend = () => {
-		/*addFriend(email:addFriend).then(response => {getFriends(email)});*/
-		setAddPopup(false);
-		setAddFriend("");
-	};
+	const handleAddFriend = async () => {
+		var params = {userEmail: email, friendEmail: addFriend}
+    	var endpoint = "api/friend/add?"
+    	var url = new URLSearchParams(params);
+
+    	await fetch(endpoint + url, {
+			method: 'POST',
+			headers: {'Content-Type': 'application/json'}
+		}).then(async response => {
+			if(!response.ok)
+			{
+			  const err = await response.json()
+			  setErrorMessage(err.message)
+			} 
+			else 
+			{
+			  var account = localStorage.getItem("account");
+			  var accountJSON = await JSON.parse(account)
+			  await accountJSON.friends.push(addFriend)
+			  localStorage.setItem('account', JSON.stringify(accountJSON))
+			  setAddPopup(false);
+			  setAddFriend("");
+			  window.location.reload(true);
+			}
+		})
+		
+	}
 
 	const handleCloseAddPopup = () => {
 		setAddPopup(false);
@@ -76,11 +100,36 @@ export default function Profile() {
     	setRemoveFriend("");
 	};
 
-	const handleRemoveFriend = () => {
-		/*removeFriend(email:removeFriend).then(response => {getFriends(email)});*/
-		console.log(removeFriend)
-		setRemovePopup(false);
-    	setRemoveFriend("");
+	const resetError = () => {
+		setErrorMessage("")
+	  }
+
+	const handleRemoveFriend = async () => {
+		var params = {userEmail: email, friendEmail: removeFriend}
+    	var endpoint = "api/friend/remove?"
+    	var url = new URLSearchParams(params);
+
+    	await fetch(endpoint + url, {
+			method: 'POST',
+			headers: {'Content-Type': 'application/json'}
+		}).then(async response => {
+			if(!response.ok)
+			{
+			  const err = await response.json()
+			  setErrorMessage(err.message)
+			} 
+			else 
+			{
+			  var account = localStorage.getItem("account");
+			  var accountJSON = JSON.parse(account)
+			  var index = accountJSON.friends.indexOf(removeFriend)
+			  await accountJSON.friends.splice(index, 1)
+			  localStorage.setItem('account', JSON.stringify(accountJSON))
+			  setRemovePopup(false);
+    		  setRemoveFriend("");
+			  window.location.reload(true);
+			}
+		})
 	};
 
     return (
@@ -128,10 +177,11 @@ export default function Profile() {
             >
             <DialogTitle>{"Enter Friends Email"}</DialogTitle>
             	<form className={classes.popup} onSubmit={handleAddFriend}>
+				{errorMessage && <Alert severity="error">{errorMessage}</Alert>}
             		<TextField
             			autoFocus
                   		value={addFriend}
-                  		onInput={ e=>setAddFriend(e.target.value)}
+                  		onInput={ e => { resetError(); setAddFriend(e.target.value)}}
                   		margin="dense"
                   		name="email"
                   		id="runname"
