@@ -406,14 +406,14 @@ export default function Workouts(props) {
     return (
         <div className="app">
           <h1>Workouts {' '}
-            <Button variant="outlined" color="primary" onClick={handleClickOpenAddWorkout}>
+            <Button variant="outlined" color="primary" onClick={handleClickOpenAddWorkout} data-testid="addworkoutbutton">
               Add Workout
             </Button>
           </h1>
             <Calendar workouts={workouts} removeEventFromCal={deleteDayFromWorkout} email={props.email}/>
             <div className="tables">
             <TableContainer component={Paper}>
-                <Table aria-label="workout table">
+                <Table aria-label="workout table" data-testid="workouttable">
                     <TableHead>
                     <TableRow>
                         <TableCell></TableCell>
@@ -445,7 +445,7 @@ export default function Workouts(props) {
             </TableContainer>
             </div>
             <h1>Exercises {'   '}
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+            <Button variant="outlined" color="primary" onClick={handleClickOpen} data-testid="addexercisebutton">
               Add Exercise
             </Button>
           </h1>
@@ -596,6 +596,7 @@ export default function Workouts(props) {
                 open={openAddWorkout}
                 onClose={handleCloseAddWorkout}
                 aria-labelledby="add-workout-title"
+                data-testid="addworkoutpopup"
               >
                 <form className={classes.popup} onSubmit={handleAddWorkout}>
                   <TextField
@@ -737,6 +738,7 @@ export default function Workouts(props) {
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="add-exercise-title"
+                data-testid="addexercisepopup"
               >
                 <AppBar position="static" color="default">
                   <Tabs
@@ -848,7 +850,7 @@ export default function Workouts(props) {
             </div>
             <div className="tables">
             <TableContainer component={Paper}>
-                <Table aria-label="weight exercises table">
+                <Table aria-label="weight exercises table" data-testid="weightexercisestable">
                     <TableHead>
                     <TableRow>
                         <TableCell></TableCell>
@@ -884,7 +886,7 @@ export default function Workouts(props) {
             <h2>Running</h2>
             <div className="tables">
             <TableContainer component={Paper}>
-                <Table aria-label="run exercises table">
+                <Table aria-label="run exercises table" data-testid="runexercisestable">
                     <TableHead>
                     <TableRow>
                         <TableCell></TableCell>

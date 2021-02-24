@@ -77,6 +77,7 @@ export default function SignIn(props) {
             name="email"
             autoComplete="email"
             autoFocus
+            data-testid="emailfield"
             onChange={handleEmailChange}
           />
           <TextField
@@ -89,6 +90,7 @@ export default function SignIn(props) {
             type="password"
             id="password"
             autoComplete="current-password"
+            data-testid="passwordfield"
             onChange={handlePasswordChange}
           />
           <Button
@@ -97,6 +99,7 @@ export default function SignIn(props) {
             variant="contained"
             color="primary"
             className={classes.submit}
+            data-testid="signinbutton"
           >
             Sign In
           </Button>
