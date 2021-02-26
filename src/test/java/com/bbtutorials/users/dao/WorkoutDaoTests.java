@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import java.util.List;
 import java.util.Set;
+import java.util.HashSet;
 
 import static org.junit.Assert.*;
 
@@ -22,7 +23,7 @@ public class WorkoutDaoTests {
 
     private final String testEmail = "test@mail.com";
     private final String testName = "Name";
-    private final String testId = "test";
+
 
     @BeforeClass
     public static void setup() {
@@ -44,15 +45,15 @@ public class WorkoutDaoTests {
 
     public Workout createWorkout() {
         Workout testWorkout = new Workout();
-        testWorkout.setId(testEmail);
-        testWorkout.setUserEmail(testWeightName);
-        testWorkout.setName(testLbs);
+
+        testWorkout.setUserEmail(testEmail);
+        testWorkout.setName(testName);
         
         Set<String> testExer = new HashSet<String>();
         Set<Integer> testDays = new HashSet<Integer>();
         
-        testExer.add("testexcercise1");
-        testExer.add("testexcercise2");
+        testExer.add("testexercise1");
+        testExer.add("testexercise2");
         testWorkout.setExercises(testExer);
         
         testDays.add(1);
@@ -70,15 +71,18 @@ public class WorkoutDaoTests {
         List<Workout> workouts = workoutDao.getWorkouts(testEmail);
         
         Set<Integer> checkDays = workouts.get(0).getDaysOfWeek();
-        Set<String> checkExer = workouts.get(0).getExcercises();
-        
+        Set<String> checkExer = workouts.get(0).getExercises();
         assertEquals(1, workouts.size());
         assertEquals(testName, workouts.get(0).getName());
-        assertEquals(testId, workouts.get(0).getId());
+
         assertEquals(testEmail, workouts.get(0).getUserEmail());
         assertEquals(2, checkDays.size());
         assertEquals(2, checkExer.size());
-
+        assertTrue(checkDays.contains(2));
+        assertTrue(checkDays.contains(1));
+        assertTrue(checkExer.contains("testexercise1"));
+        assertTrue(checkExer.contains("testexercise2"));
+        
         workoutDao.removeWorkout(workouts.get(0));
 
         workouts = workoutDao.getWorkouts(testEmail);
@@ -90,14 +94,14 @@ public class WorkoutDaoTests {
     public void testMultipleWorkouts() {
         workoutDao.putWorkout(createWorkout());
         Workout second = createWorkout();
-        String newID = "newID";
-        second.setId(newID);
+        //String newName = "newName";
+        //second.setId(newName);
 
         workoutDao.putWorkout(second);
 
         List<Workout> workouts = workoutDao.getWorkouts(testEmail);
         
-        assertEquals(newID, workouts.get(1).getId());
+        //assertEquals(newName, workouts.get(1).getName());
 
         assertEquals(2, workouts.size());
         
@@ -111,16 +115,21 @@ public class WorkoutDaoTests {
         workoutDao.putWorkout(createWorkout());
 
         List<Workout> workouts = workoutDao.getWorkouts(testEmail);
-        String updatedID = "UpdatedID";
+        Set<Integer> testDays2 = new HashSet<Integer>();
+        
+        testDays2.add(3);
+        testDays2.add(4);
         
         Workout updatedWorkout = workouts.get(0);
-        updatedWorkout.setId(updatedID);
+        updatedWorkout.setDaysOfWeek(testDays2);
 
         workoutDao.updateWorkout(updatedWorkout);
 
         workouts = workoutDao.getWorkouts(testEmail);
 
-        assertEquals(updatedID, workouts.get(0).getId());
+        Set<Integer> checkDays = workouts.get(0).getDaysOfWeek();
+        assertTrue(checkDays.contains(3));
+        assertTrue(checkDays.contains(4));
     }
 
 
