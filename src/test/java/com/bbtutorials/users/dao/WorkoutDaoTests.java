@@ -78,10 +78,8 @@ public class WorkoutDaoTests {
         assertEquals(testEmail, workouts.get(0).getUserEmail());
         assertEquals(2, checkDays.size());
         assertEquals(2, checkExer.size());
-        assertEquals(true, checkDays.contains(2));
-        assertEquals(true, checkDays.contains(1));
-        assertEquals(true, checkExer.contains("testexercise1"));
-        assertEquals(true, checkExer.contains("testexercise2"));
+        assertEquals(checkDays, workouts.get(0).getDaysOfWeek());
+        assertEquals(checkExer, workouts.get(0).getExercises());
         
         workoutDao.removeWorkout(workouts.get(0));
 
@@ -125,8 +123,8 @@ public class WorkoutDaoTests {
         workouts = workoutDao.getWorkouts(testEmail);
 
         Set<Integer> checkDays = workouts.get(0).getDaysOfWeek();
-        assertEquals(true, checkDays.contains(3));
-        assertEquals(true, checkDays.contains(4));
+        
+        assertEquals(testDays2, workouts.get(0).getDaysOfWeek());
         assertEquals(2, checkDays.size());
     }
 
