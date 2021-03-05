@@ -75,7 +75,16 @@ export default function Profile() {
 			{
 			  var account = localStorage.getItem("account");
 			  var accountJSON = await JSON.parse(account)
-			  await accountJSON.friends.push(addFriend)
+			  if(accountJSON.friends !== null)
+			  {
+			  	await accountJSON.friends.push(addFriend)
+			  }
+			  else
+			  {
+				var tempArray = []
+				tempArray.push(addFriend)
+				accountJSON.friends = tempArray
+			  }
 			  localStorage.setItem('account', JSON.stringify(accountJSON))
 			  setAddPopup(false);
 			  setAddFriend("");
@@ -102,6 +111,32 @@ export default function Profile() {
 
 	const resetError = () => {
 		setErrorMessage("")
+	  }
+
+	  const getTableBody = () => {
+		if(friends !== null)
+		{
+			return <TableBody>
+					{friends.map((friend) => (
+						<TableRow key={friend}>
+							<TableCell component="th" scope="row">
+								{friend}
+							</TableCell>
+							<TableCell></TableCell>
+							<TableCell></TableCell>
+							<TableCell>
+								<IconButton align="right" color="secondary" size="small" onClick={() => setRemoveFriendState(friend)}>
+									<RemoveCircleOutlineIcon />
+								</IconButton>
+							</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+		}
+		else
+		{
+			return <TableBody></TableBody>
+		}
 	  }
 
 	const handleRemoveFriend = async () => {
@@ -152,22 +187,7 @@ export default function Profile() {
             					</TableCell>
                     		</TableRow>
                     	</TableHead>
-                    	<TableBody>
-                    		{friends.map((friend) => (
-            					<TableRow key={friend}>
-              						<TableCell component="th" scope="row">
-                						{friend}
-             						</TableCell>
-             						<TableCell></TableCell>
-             						<TableCell></TableCell>
-             						<TableCell>
-             							<IconButton align="right" color="secondary" size="small" onClick={() => setRemoveFriendState(friend)}>
-             								<RemoveCircleOutlineIcon />
-                          				</IconButton>
-             						</TableCell>
-           						</TableRow>
-       						))}
-                    	</TableBody>
+                    	{getTableBody()}
                 	</Table>
             	</div>
             </TableContainer>

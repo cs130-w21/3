@@ -107,29 +107,36 @@ export default function Friends() {
     function displayFriendWorkouts () {
         let fullHTML = []
         var i = 0
-        for(i = 0; i < friends.length; i++)
+        if(friends !== null)
         {
-            fullHTML.push(<div>
-                <h1>{friends[i]}</h1>
-            <TableContainer component={Paper}>
-                <Table aria-label="workout table">
-                    <TableHead>
-                    <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell>Workout</TableCell>
-                        <TableCell align="right">Exercises</TableCell>
-                    </TableRow>
-                    </TableHead>
-                    <TableBody>
-                    
-                    {checkFriendWorkouts(friends[i])}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <br></br>
-            </div>)
+            for(i = 0; i < friends.length; i++)
+            {
+                fullHTML.push(<div>
+                    <h1>{friends[i]}</h1>
+                <TableContainer component={Paper}>
+                    <Table aria-label="workout table">
+                        <TableHead>
+                        <TableRow>
+                            <TableCell></TableCell>
+                            <TableCell>Workout</TableCell>
+                            <TableCell align="right">Exercises</TableCell>
+                        </TableRow>
+                        </TableHead>
+                        <TableBody>
+                        
+                        {checkFriendWorkouts(friends[i])}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <br></br>
+                </div>)
+            }
+            return fullHTML
         }
-        return fullHTML
+        else
+        {
+            return <div className="friends"><h1>To add friends, go to the profile page!</h1></div> 
+        }
     }
 
     const handleCloseSavePopup = () => {
