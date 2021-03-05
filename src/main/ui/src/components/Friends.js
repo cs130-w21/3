@@ -66,9 +66,12 @@ export default function Friends() {
             const account = localStorage.getItem("account");
             setEmail(JSON.parse(account).email)
             const currFriends = JSON.parse(account).friends
-            setFriends(currFriends)
-            getFriendsWorkouts(currFriends)
-            getFriendsExercises(currFriends)
+            if(currFriends !== null)
+            {
+                setFriends(currFriends)
+                getFriendsWorkouts(currFriends)
+                getFriendsExercises(currFriends)
+            }
         }
     }
 
@@ -107,7 +110,7 @@ export default function Friends() {
     function displayFriendWorkouts () {
         let fullHTML = []
         var i = 0
-        if(friends !== null)
+        if(friends !== null && friends.length !== 0)
         {
             for(i = 0; i < friends.length; i++)
             {
@@ -135,7 +138,7 @@ export default function Friends() {
         }
         else
         {
-            return <div className="friends"><h1>To add friends, go to the profile page!</h1></div> 
+            return <h1 className="tables"> To add friends, navigate to the profile page. </h1>
         }
     }
 
