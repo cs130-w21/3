@@ -171,7 +171,7 @@ class App extends Component {
   };
 
   signinButton = () => {
-    window.location = '/signin'
+    window.location = '/'
   }
   render() {
     
@@ -183,9 +183,6 @@ class App extends Component {
         <Switch>
           <Route exact path="/">
             {this.isEmailLoggedIn("/")}
-          </Route>
-          <Route exact path="/signin">
-            <SignIn onSubmit={this.handleSignInSubmit} resetError={this.resetError}/>
           </Route>
           <Route path="/signup">
             <SignUp onSubmit={this.handleSignUpSubmit} resetError={this.resetError}/>

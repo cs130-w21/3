@@ -66,9 +66,12 @@ export default function Friends() {
             const account = localStorage.getItem("account");
             setEmail(JSON.parse(account).email)
             const currFriends = JSON.parse(account).friends
-            setFriends(currFriends)
-            getFriendsWorkouts(currFriends)
-            getFriendsExercises(currFriends)
+            if(currFriends !== null)
+            {
+                setFriends(currFriends)
+                getFriendsWorkouts(currFriends)
+                getFriendsExercises(currFriends)
+            }
         }
     }
 
@@ -107,29 +110,36 @@ export default function Friends() {
     function displayFriendWorkouts () {
         let fullHTML = []
         var i = 0
-        for(i = 0; i < friends.length; i++)
+        if(friends !== null && friends.length !== 0)
         {
-            fullHTML.push(<div>
-                <h1>{friends[i]}</h1>
-            <TableContainer component={Paper}>
-                <Table aria-label="workout table">
-                    <TableHead>
-                    <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell>Workout</TableCell>
-                        <TableCell align="right">Exercises</TableCell>
-                    </TableRow>
-                    </TableHead>
-                    <TableBody>
-                    
-                    {checkFriendWorkouts(friends[i])}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <br></br>
-            </div>)
+            for(i = 0; i < friends.length; i++)
+            {
+                fullHTML.push(<div>
+                    <h1>{friends[i]}</h1>
+                <TableContainer component={Paper}>
+                    <Table aria-label="workout table">
+                        <TableHead>
+                        <TableRow>
+                            <TableCell></TableCell>
+                            <TableCell>Workout</TableCell>
+                            <TableCell align="right">Exercises</TableCell>
+                        </TableRow>
+                        </TableHead>
+                        <TableBody>
+                        
+                        {checkFriendWorkouts(friends[i])}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <br></br>
+                </div>)
+            }
+            return fullHTML
         }
-        return fullHTML
+        else
+        {
+            return <h1 className="tables"> To add friends, navigate to the profile page. </h1>
+        }
     }
 
     const handleCloseSavePopup = () => {
