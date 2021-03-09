@@ -55,3 +55,4 @@ Further, CircleCI had a preset for Maven builds and tests that generated a confi
 that we could fine-tune to our needs, such as globally installing gulp, which was needed for packaging parts of our web app. 
 The .yml config file can be found [here](https://github.com/cs130-w21/3/blob/master/.circleci/config.yml).
 Every time code was pushed to a branch, a build would trigger, causing the script to run, which was a similar process to `mvn clean install`.
+The CircleCI page can be found [here](https://app.circleci.com/pipelines/github/cs130-w21/3).
